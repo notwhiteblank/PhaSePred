@@ -1,0 +1,9 @@
+{
+  "computed_at": "2026-05-14T08:28:21.226191+00:00",
+  "mean": 7.984683786232663,
+  "n_errors": 0,
+  "n_proteins_scored": 5727,
+  "source_cache": "data/interim/uniprot_cache.jsonl",
+  "standard_deviation": 0.5177112878123772,
+  "yeast_proteins_in_cache": 5727
+}

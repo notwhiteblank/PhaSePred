@@ -1,0 +1,70 @@
+{
+  "SaPS": {
+    "phasepro_positives": {
+      "total_with_recomputed": 100,
+      "removed_due_to_train_overlap": 64,
+      "kept": 36
+    },
+    "llpsdb2_positives": {
+      "total": 249,
+      "removed_due_to_train_overlap": 150,
+      "kept": 99
+    },
+    "llpsdb2_negatives": {
+      "total": 191,
+      "removed_due_to_train_overlap": 126,
+      "kept": 65
+    }
+  },
+  "PdPS": {
+    "phasepro_positives": {
+      "total_with_recomputed": 100,
+      "removed_due_to_train_overlap": 69,
+      "kept": 31
+    },
+    "llpsdb2_positives": {
+      "total": 249,
+      "removed_due_to_train_overlap": 165,
+      "kept": 84
+    },
+    "llpsdb2_negatives": {
+      "total": 191,
+      "removed_due_to_train_overlap": 130,
+      "kept": 61
+    }
+  },
+  "hSaPS": {
+    "phasepro_positives": {
+      "total_with_recomputed": 100,
+      "removed_due_to_train_overlap": 35,
+      "kept": 65
+    },
+    "llpsdb2_positives": {
+      "total": 249,
+      "removed_due_to_train_overlap": 83,
+      "kept": 166
+    },
+    "llpsdb2_negatives": {
+      "total": 191,
+      "removed_due_to_train_overlap": 63,
+      "kept": 128
+    }
+  },
+  "hPdPS": {
+    "phasepro_positives": {
+      "total_with_recomputed": 100,
+      "removed_due_to_train_overlap": 38,
+      "kept": 62
+    },
+    "llpsdb2_positives": {
+      "total": 249,
+      "removed_due_to_train_overlap": 80,
+      "kept": 169
+    },
+    "llpsdb2_negatives": {
+      "total": 191,
+      "removed_due_to_train_overlap": 60,
+      "kept": 131
+    }
+  }
+}

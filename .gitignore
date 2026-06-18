@@ -1,0 +1,81 @@
+# Python / tooling
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+.coverage
+htmlcov/
+.venv/
+venv/
+.external_envs/
+
+# Logs and local run output
+*.log
+runs/
+outputs/
+
+# Agent and personal workspace materials (NOT for GitHub)
+AGENTS.md
+CLAUDE.md
+.agents/
+.codex/
+.claude/
+docs/superpowers/
+docs/GIT_WORKFLOW.md
+docs/HANDOFF.md
+
+# Large source materials (kept locally, NOT for GitHub)
+PhaSePred_article&data/
+support_article/
+
+# Raw and derived data — local only
+data/
+!data/raw/external/.gitkeep
+!data/raw/external/_manifests/
+!data/raw/external/_manifests/RAW_DATA_MANIFEST.md
+!data/raw/external/_manifests/README.md
+
+# But: src/phasepred/data/ ships model calibration constants (catgranule_v1_norm.json)
+# and is part of the package, not user data.
+!src/phasepred/data/
+!src/phasepred/data/**
+
+# Experiment artifact symlinks (heavy)
+experiments/**/artifacts/*
+!experiments/**/artifacts/.gitkeep
+
+# Vendor decisions pending — large external tool archives and extracted trees.
+# The vendored source we DO ship sits next to README.md inside each per-tool dir;
+# the archives below are user-installed locally and don't enter git history.
+tools/per-tool/AlphaFold/LocalColabFold
+tools/per-tool/catGRANULE_v2/catGRANULE2.0-1.0.0/
+tools/per-tool/catGRANULE_v2/*.tar.gz
+tools/per-tool/DeepCoil/*.tar.gz
+tools/per-tool/ESpritz/*.zip
+tools/per-tool/ESpritz/espritz/
+tools/per-tool/IUPred3/*.tar.gz
+tools/per-tool/IUPred3/iupred3/
+tools/per-tool/PLAAC/*.zip
+tools/per-tool/PScore/*.tgz
+tools/per-tool/PScore/SourceCodeS2/DBS/
+
+# PLAAC: vendor LICENSE, README, cli/src/, build_*.sh, and the prebuilt
+# plaac.jar under web/bin/; skip example datasets and web/public/.
+tools/per-tool/PLAAC/plaac-master/cli/example/
+tools/per-tool/PLAAC/plaac-master/web/*
+!tools/per-tool/PLAAC/plaac-master/web/bin/
+tools/per-tool/PLAAC/plaac-master/web/bin/*
+!tools/per-tool/PLAAC/plaac-master/web/bin/plaac.jar
+
+# Object files from local builds
+tools/per-tool/SEG/*.o
+tools/per-tool/SEG/seg.sgi.iris5
+tools/per-tool/SEG/seg.sun.sunos4
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*~

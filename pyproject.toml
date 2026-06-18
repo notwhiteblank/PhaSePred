@@ -1,0 +1,75 @@
+[project]
+name = "phasepred-reconstruction"
+version = "0.1.0"
+description = "Reconstruction workspace for a CLI batch predictor inspired by PhaSePred."
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Tingting Li Lab, Department of Biochemistry and Molecular Biology, School of Basic Medical Sciences, Peking University"},
+]
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "biopython>=1.85",
+    "matplotlib>=3.8",
+    "joblib>=1.5",
+    "localcider>=0.1.21",
+    "numpy>=1.26,<3",
+    "openpyxl>=3.1",
+    "pandas>=2.2",
+    "pydantic>=2.11",
+    "pyarrow>=20.0",
+    "python-calamine>=0.3",
+    "requests>=2.32",
+    "scikit-learn>=1.5",
+    "scipy>=1.13",
+    "shap>=0.46",
+    "tqdm>=4.67",
+    "typer>=0.15",
+    "xgboost>=2.1",
+]
+
+[project.scripts]
+phasepred = "phasepred.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+phasepred = ["data/*.json"]
+
+[tool.uv]
+package = true
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15",
+    "optuna>=4.8.0",
+    "pytest>=8.3",
+    "ruff>=0.11",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = [
+    "Tools",
+    "PhaSePred_article&data",
+    "support_article",
+    "data/raw/external",
+    ".venv",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

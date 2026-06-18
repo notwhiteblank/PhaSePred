@@ -1,0 +1,118 @@
+{
+  "SaPS": {
+    "best_cv_auc": 0.8876726762616027,
+    "best_params": {
+      "n_estimators": 300,
+      "max_depth": 3,
+      "learning_rate": 0.014162763161331547,
+      "subsample": 0.9467686520086958,
+      "colsample_bytree": 0.6723674849853961,
+      "min_child_weight": 16,
+      "gamma": 1.320179731526589,
+      "reg_alpha": 1.569641720577203,
+      "reg_lambda": 6.663721457674528
+    },
+    "feature_columns": [
+      "Hydropathy",
+      "FCR",
+      "IDR",
+      "LCR",
+      "PScore",
+      "PLAAC",
+      "catGRANULE",
+      "DeepCoil"
+    ],
+    "pos_weight": 378.59842519685037,
+    "n_trials": 100,
+    "cv_folds": 5,
+    "seed": 42
+  },
+  "PdPS": {
+    "best_cv_auc": 0.7590011137830743,
+    "best_params": {
+      "n_estimators": 250,
+      "max_depth": 3,
+      "learning_rate": 0.016359082997042494,
+      "subsample": 0.9084358566087917,
+      "colsample_bytree": 0.8690321926983734,
+      "min_child_weight": 6,
+      "gamma": 0.16963100451749222,
+      "reg_alpha": 0.247573626696837,
+      "reg_lambda": 3.0606044489555075
+    },
+    "feature_columns": [
+      "Hydropathy",
+      "FCR",
+      "IDR",
+      "LCR",
+      "PScore",
+      "PLAAC",
+      "catGRANULE",
+      "DeepCoil"
+    ],
+    "pos_weight": 225.73708920187792,
+    "n_trials": 100,
+    "cv_folds": 5,
+    "seed": 42
+  },
+  "hSaPS": {
+    "best_cv_auc": 0.9329866318168205,
+    "best_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.04194763271473302,
+      "subsample": 0.9058529946915558,
+      "colsample_bytree": 0.6448406258021643,
+      "min_child_weight": 17,
+      "gamma": 0.47004794017490814,
+      "reg_alpha": 1.2322458463259673,
+      "reg_lambda": 8.569596670203197
+    },
+    "feature_columns": [
+      "Hydropathy",
+      "FCR",
+      "IDR",
+      "LCR",
+      "PScore",
+      "PLAAC",
+      "catGRANULE",
+      "DeepCoil",
+      "Phos freq",
+      "DeepPhase"
+    ],
+    "pos_weight": 148.28813559322035,
+    "n_trials": 100,
+    "cv_folds": 5,
+    "seed": 42
+  },
+  "hPdPS": {
+    "best_cv_auc": 0.8512257969108017,
+    "best_params": {
+      "n_estimators": 400,
+      "max_depth": 4,
+      "learning_rate": 0.011092944219348509,
+      "subsample": 0.5189619728935062,
+      "colsample_bytree": 0.9779661294437074,
+      "min_child_weight": 15,
+      "gamma": 1.7262743397148808,
+      "reg_alpha": 1.3086990226710267,
+      "reg_lambda": 5.182212471010935
+    },
+    "feature_columns": [
+      "Hydropathy",
+      "FCR",
+      "IDR",
+      "LCR",
+      "PScore",
+      "PLAAC",
+      "catGRANULE",
+      "DeepCoil",
+      "Phos freq",
+      "DeepPhase"
+    ],
+    "pos_weight": 91.13541666666667,
+    "n_trials": 100,
+    "cv_folds": 5,
+    "seed": 42
+  }
+}
