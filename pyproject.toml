@@ -2,7 +2,7 @@
 name = "phasepred"
 version = "1.0.0"
 description = "Paper-faithful re-implementation of the PhaSePred phase-separation predictor (Chen et al. 2022, PNAS)."
-readme = "README.md"
+readme = { file = "README-pypi.md", content-type = "text/markdown" }
 license = "MIT"
 authors = [
     {name = "Tingting Li Lab, Department of Biochemistry and Molecular Biology, School of Basic Medical Sciences, Peking University"},

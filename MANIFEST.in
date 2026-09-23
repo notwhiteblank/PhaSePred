@@ -21,6 +21,7 @@
 # index; the repository remains the route for training on the paper data.
 include environment.yml
 include NOTICE
+include README-pypi.md
 recursive-include scripts *.py *.sh *.md
 
 include packages/catgranule/pyproject.toml
