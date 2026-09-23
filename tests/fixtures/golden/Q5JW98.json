@@ -1,0 +1,65 @@
+{
+  "accession": "Q5JW98",
+  "entry_name": "CAHM4_HUMAN",
+  "organism": "Homo sapiens (Human)",
+  "status": "reviewed",
+  "sequence_length": 314,
+  "seq_source": "archive-2022-02-11",
+  "psp_version_marker": "042026",
+  "tools": {
+    "catgranule": {
+      "single": -0.8697,
+      "residue_length": 264
+    },
+    "plaac": {
+      "single": -0.193,
+      "residue_length": 314
+    },
+    "pscore": {
+      "single": -0.2,
+      "residue_length": 311
+    },
+    "espritz": {
+      "single": 0.0,
+      "residue_length": 314,
+      "label_length": 314
+    },
+    "hydropathy": {
+      "single": 0.5199575371549892,
+      "residue_length": 314
+    },
+    "deepcoil": {
+      "single": 0.0,
+      "raw_cc_max": 0.0804,
+      "raw_cc_length": 314,
+      "binary": 0.0,
+      "sharpen_length": 314
+    },
+    "seg": {
+      "single": 0.0,
+      "label_length": 314
+    },
+    "charge": {
+      "FCR": 0.17197452229299362,
+      "label_length": 314,
+      "POS_pos_count": 26,
+      "POS_neg_count": 28
+    },
+    "phos": {
+      "single": 0.0,
+      "site_count": 0,
+      "record_source": "web-archive-2022-02-11"
+    },
+    "deepphase": {
+      "single": null,
+      "location": "",
+      "has_record": false
+    }
+  },
+  "phasepred": {
+    "SaPS-8fea": 0.08279635012149811,
+    "PdPS-8fea": 0.08938097953796387,
+    "SaPS-10fea": 0.10668549686670303,
+    "PdPS-10fea": 0.03268786147236824
+  }
+}

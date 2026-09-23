@@ -1,0 +1,989 @@
+{
+  "generated_by": "scripts/derive_test_fixtures.py",
+  "freeze_date": "2026-09-21",
+  "generating_command": ".pixi/envs/default/bin/python scripts/derive_test_fixtures.py",
+  "psp_version_marker": "042026",
+  "psp_version_note": "Local pinned PhosphoSitePlus marker. Upstream had already rolled to 071726 during E4 and the paper used 2020-09-08, so any comparison against the frozen Phos freq must first read the installed marker: match -> exact compare, mismatch -> SKIP (Ruling 2).",
+  "seq_source_default": "archive-2022-02-11",
+  "seq_source_note": "IDR must use the archive-era sequence: spec 2.7 measured 91 of 101 IDR mismatches came from uniprot-cache sequences.",
+  "archive": {
+    "path": "data/raw/external/phasepred_web/human_reviewed.json",
+    "structure": "flat dict accession -> record with capitalised top-level tool keys (catGRANULE, PLAAC, ...) and a PhaSePred dict; NOT the web API's data.tools.* envelope that spec 2.8 described."
+  },
+  "proteins": {
+    "Q08211": {
+      "entry_name": "DHX9_HUMAN",
+      "role": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)",
+      "seq_source": "archive-2022-02-11",
+      "length": 1270
+    },
+    "P35637": {
+      "entry_name": "FUS_HUMAN",
+      "role": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)",
+      "seq_source": "archive-2022-02-11",
+      "length": 526
+    },
+    "O75146": {
+      "entry_name": "HIP1R_HUMAN",
+      "role": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)",
+      "seq_source": "archive-2022-02-11",
+      "length": 1068
+    },
+    "O95153": {
+      "entry_name": "RIMB1_HUMAN",
+      "role": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record",
+      "seq_source": "archive-2022-02-11",
+      "length": 1857
+    },
+    "Q6ZUS6": {
+      "entry_name": "CC149_HUMAN",
+      "role": "DeepCoil binary 1 (max raw_cc 0.8405)",
+      "seq_source": "archive-2022-02-11",
+      "length": 474
+    },
+    "P49454": {
+      "entry_name": "CENPF_HUMAN",
+      "role": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)",
+      "seq_source": "archive-2022-02-11",
+      "length": 3114
+    },
+    "Q8N1N0": {
+      "entry_name": "CLC4F_HUMAN",
+      "role": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record",
+      "seq_source": "archive-2022-02-11",
+      "length": 589
+    },
+    "Q13023": {
+      "entry_name": "AKAP6_HUMAN",
+      "role": "DeepPhase no record (archive single is NaN, location/url empty)",
+      "seq_source": "archive-2022-02-11",
+      "length": 2319
+    },
+    "Q6NSI1": {
+      "entry_name": "AR26L_HUMAN",
+      "role": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0",
+      "seq_source": "archive-2022-02-11",
+      "length": 321
+    },
+    "Q5JW98": {
+      "entry_name": "CAHM4_HUMAN",
+      "role": "PSP no record; DeepPhase no record; IDR=0; LCR=0",
+      "seq_source": "archive-2022-02-11",
+      "length": 314
+    },
+    "Q8WWX9": {
+      "entry_name": "SELM_HUMAN",
+      "role": "non-standard residue U (selenocysteine); archive Hydropathy/PScore are NaN",
+      "seq_source": "archive-2022-02-11",
+      "length": 145
+    },
+    "Q92841": {
+      "entry_name": "DDX17_HUMAN",
+      "role": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record",
+      "seq_source": "archive-2022-02-11",
+      "length": 729
+    },
+    "Q9Y6X1": {
+      "entry_name": "SERP1_HUMAN",
+      "role": "IDR high (ESpritz single 1.0)",
+      "seq_source": "archive-2022-02-11",
+      "length": 66
+    },
+    "Q9Y675": {
+      "entry_name": "SNURF_HUMAN",
+      "role": "IDR high (1.0); DeepPhase record (0.950)",
+      "seq_source": "archive-2022-02-11",
+      "length": 71
+    },
+    "Q9Y6Z2": {
+      "entry_name": "CF123_HUMAN",
+      "role": "IDR high (1.0); short-ish (57 aa); PSP no record; DeepPhase no record",
+      "seq_source": "archive-2022-02-11",
+      "length": 57
+    },
+    "SHORT": {
+      "entry_name": "SYNTHETIC_SHORT",
+      "role": "very short sequence (<7 residues) boundary; SYNTHETIC -- the archive's shortest reviewed human sequence is 55 aa, so this case cannot be derived",
+      "seq_source": "synthetic",
+      "length": 6,
+      "synthetic": true
+    }
+  },
+  "features": {
+    "Hydropathy": {
+      "source": "web-archive",
+      "tolerance": "abs<=1e-3",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 0.46235345581802134,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)"
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 0.35340092944655627,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)"
+        },
+        {
+          "accession": "O75146",
+          "archive_value": 0.4441843528922183,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)"
+        },
+        {
+          "accession": "O95153",
+          "archive_value": 0.42256925746425356,
+          "reason": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record"
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": 0.4020862634786689,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)"
+        },
+        {
+          "accession": "P49454",
+          "archive_value": 0.3982373510311884,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)"
+        },
+        {
+          "accession": "Q8N1N0",
+          "archive_value": 0.4580267873986047,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record"
+        },
+        {
+          "accession": "Q13023",
+          "archive_value": 0.42489099707728184,
+          "reason": "DeepPhase no record (archive single is NaN, location/url empty)"
+        },
+        {
+          "accession": "Q6NSI1",
+          "archive_value": 0.41588785046729,
+          "reason": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0"
+        },
+        {
+          "accession": "Q5JW98",
+          "archive_value": 0.5199575371549892,
+          "reason": "PSP no record; DeepPhase no record; IDR=0; LCR=0"
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 0.43167200121932625,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record"
+        },
+        {
+          "accession": "Q9Y6X1",
+          "archive_value": 0.5003367003367004,
+          "reason": "IDR high (ESpritz single 1.0)"
+        },
+        {
+          "accession": "Q9Y675",
+          "archive_value": 0.3798122065727699,
+          "reason": "IDR high (1.0); DeepPhase record (0.950)"
+        },
+        {
+          "accession": "Q9Y6Z2",
+          "archive_value": 0.45321637426900596,
+          "reason": "IDR high (1.0); short-ish (57 aa); PSP no record; DeepPhase no record"
+        }
+      ]
+    },
+    "FCR": {
+      "source": "web-archive",
+      "tolerance": "abs<=1e-3",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 0.2251968503937008,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)"
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 0.16730038022813687,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)"
+        },
+        {
+          "accession": "O75146",
+          "archive_value": 0.2762172284644195,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)"
+        },
+        {
+          "accession": "O95153",
+          "archive_value": 0.25848142164781907,
+          "reason": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record"
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": 0.310126582278481,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)"
+        },
+        {
+          "accession": "P49454",
+          "archive_value": 0.33590237636480413,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)"
+        },
+        {
+          "accession": "Q8N1N0",
+          "archive_value": 0.1935483870967742,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record"
+        },
+        {
+          "accession": "Q13023",
+          "archive_value": 0.2652005174644243,
+          "reason": "DeepPhase no record (archive single is NaN, location/url empty)"
+        },
+        {
+          "accession": "Q6NSI1",
+          "archive_value": 0.2772585669781931,
+          "reason": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0"
+        },
+        {
+          "accession": "Q5JW98",
+          "archive_value": 0.17197452229299362,
+          "reason": "PSP no record; DeepPhase no record; IDR=0; LCR=0"
+        },
+        {
+          "accession": "Q8WWX9",
+          "archive_value": 0.23448275862068965,
+          "reason": "non-standard residue U (selenocysteine); archive Hydropathy/PScore are NaN"
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 0.23868312757201646,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record"
+        },
+        {
+          "accession": "Q9Y6X1",
+          "archive_value": 0.19696969696969696,
+          "reason": "IDR high (ESpritz single 1.0)"
+        },
+        {
+          "accession": "Q9Y675",
+          "archive_value": 0.30985915492957744,
+          "reason": "IDR high (1.0); DeepPhase record (0.950)"
+        },
+        {
+          "accession": "Q9Y6Z2",
+          "archive_value": 0.14035087719298245,
+          "reason": "IDR high (1.0); short-ish (57 aa); PSP no record; DeepPhase no record"
+        }
+      ]
+    },
+    "IDR": {
+      "source": "web-archive + archive-era sequence",
+      "tolerance": "abs<=1e-3",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 0.0,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)"
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 0.688212927756654,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)"
+        },
+        {
+          "accession": "O75146",
+          "archive_value": 0.04119850187265917,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)"
+        },
+        {
+          "accession": "O95153",
+          "archive_value": 0.2730210016155089,
+          "reason": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record"
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": 0.35864978902953587,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)"
+        },
+        {
+          "accession": "P49454",
+          "archive_value": 0.060051380860629416,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)"
+        },
+        {
+          "accession": "Q8N1N0",
+          "archive_value": 0.0,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record"
+        },
+        {
+          "accession": "Q13023",
+          "archive_value": 0.042690815006468305,
+          "reason": "DeepPhase no record (archive single is NaN, location/url empty)"
+        },
+        {
+          "accession": "Q6NSI1",
+          "archive_value": 0.16510903426791276,
+          "reason": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0"
+        },
+        {
+          "accession": "Q5JW98",
+          "archive_value": 0.0,
+          "reason": "PSP no record; DeepPhase no record; IDR=0; LCR=0"
+        },
+        {
+          "accession": "Q8WWX9",
+          "archive_value": 0.14482758620689656,
+          "reason": "non-standard residue U (selenocysteine); archive Hydropathy/PScore are NaN"
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 0.12071330589849108,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record"
+        },
+        {
+          "accession": "Q9Y6X1",
+          "archive_value": 1.0,
+          "reason": "IDR high (ESpritz single 1.0)"
+        },
+        {
+          "accession": "Q9Y675",
+          "archive_value": 1.0,
+          "reason": "IDR high (1.0); DeepPhase record (0.950)"
+        },
+        {
+          "accession": "Q9Y6Z2",
+          "archive_value": 1.0,
+          "reason": "IDR high (1.0); short-ish (57 aa); PSP no record; DeepPhase no record"
+        }
+      ]
+    },
+    "LCR": {
+      "source": "web-archive",
+      "tolerance": "abs<=1e-3",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 0.1125984251968504,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)"
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 0.6787072243346007,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)"
+        },
+        {
+          "accession": "O75146",
+          "archive_value": 0.08426966292134831,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)"
+        },
+        {
+          "accession": "O95153",
+          "archive_value": 0.12924071082390953,
+          "reason": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record"
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": 0.052742616033755275,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)"
+        },
+        {
+          "accession": "P49454",
+          "archive_value": 0.08477842003853564,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)"
+        },
+        {
+          "accession": "Q8N1N0",
+          "archive_value": 0.030560271646859084,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record"
+        },
+        {
+          "accession": "Q13023",
+          "archive_value": 0.08365674859853385,
+          "reason": "DeepPhase no record (archive single is NaN, location/url empty)"
+        },
+        {
+          "accession": "Q6NSI1",
+          "archive_value": 0.0,
+          "reason": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0"
+        },
+        {
+          "accession": "Q5JW98",
+          "archive_value": 0.0,
+          "reason": "PSP no record; DeepPhase no record; IDR=0; LCR=0"
+        },
+        {
+          "accession": "Q8WWX9",
+          "archive_value": 0.16551724137931034,
+          "reason": "non-standard residue U (selenocysteine); archive Hydropathy/PScore are NaN"
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 0.18792866941015088,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record"
+        },
+        {
+          "accession": "Q9Y6X1",
+          "archive_value": 0.0,
+          "reason": "IDR high (ESpritz single 1.0)"
+        },
+        {
+          "accession": "Q9Y675",
+          "archive_value": 0.11267605633802817,
+          "reason": "IDR high (1.0); DeepPhase record (0.950)"
+        },
+        {
+          "accession": "Q9Y6Z2",
+          "archive_value": 0.0,
+          "reason": "IDR high (1.0); short-ish (57 aa); PSP no record; DeepPhase no record"
+        }
+      ]
+    },
+    "PScore": {
+      "source": "web-archive",
+      "tolerance": "abs<=1e-3",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 8.96,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)"
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 13.96,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)"
+        },
+        {
+          "accession": "O75146",
+          "archive_value": 0.51,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)"
+        },
+        {
+          "accession": "O95153",
+          "archive_value": 4.36,
+          "reason": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record"
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": -0.24,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)"
+        },
+        {
+          "accession": "P49454",
+          "archive_value": 2.82,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)"
+        },
+        {
+          "accession": "Q8N1N0",
+          "archive_value": 0.84,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record"
+        },
+        {
+          "accession": "Q13023",
+          "archive_value": 1.35,
+          "reason": "DeepPhase no record (archive single is NaN, location/url empty)"
+        },
+        {
+          "accession": "Q6NSI1",
+          "archive_value": 3.43,
+          "reason": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0"
+        },
+        {
+          "accession": "Q5JW98",
+          "archive_value": -0.2,
+          "reason": "PSP no record; DeepPhase no record; IDR=0; LCR=0"
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 4.81,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record"
+        }
+      ]
+    },
+    "PLAAC": {
+      "source": "web-archive",
+      "tolerance": "abs<=1e-3",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 0.224,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)"
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 0.674,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)"
+        },
+        {
+          "accession": "O75146",
+          "archive_value": -0.331,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)"
+        },
+        {
+          "accession": "O95153",
+          "archive_value": -0.146,
+          "reason": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record"
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": -0.345,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)"
+        },
+        {
+          "accession": "P49454",
+          "archive_value": -0.135,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)"
+        },
+        {
+          "accession": "Q8N1N0",
+          "archive_value": -0.115,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record"
+        },
+        {
+          "accession": "Q13023",
+          "archive_value": -0.109,
+          "reason": "DeepPhase no record (archive single is NaN, location/url empty)"
+        },
+        {
+          "accession": "Q6NSI1",
+          "archive_value": -0.269,
+          "reason": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0"
+        },
+        {
+          "accession": "Q5JW98",
+          "archive_value": -0.193,
+          "reason": "PSP no record; DeepPhase no record; IDR=0; LCR=0"
+        },
+        {
+          "accession": "Q8WWX9",
+          "archive_value": -0.409,
+          "reason": "non-standard residue U (selenocysteine); archive Hydropathy/PScore are NaN"
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 0.302,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record"
+        },
+        {
+          "accession": "Q9Y6X1",
+          "archive_value": -0.402,
+          "reason": "IDR high (ESpritz single 1.0)"
+        },
+        {
+          "accession": "Q9Y675",
+          "archive_value": -0.338,
+          "reason": "IDR high (1.0); DeepPhase record (0.950)"
+        }
+      ]
+    },
+    "DeepCoil": {
+      "source": "web-archive, binarised (archive record-only; gold = local frozen)",
+      "tolerance": "exact vs local frozen (Ruling 9); archive record-only",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 0.0,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)",
+          "local_frozen_binary": 0.0
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 0.0,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)",
+          "local_frozen_binary": 0.0
+        },
+        {
+          "accession": "O75146",
+          "archive_value": 0.0,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)",
+          "local_frozen_binary": 1.0,
+          "local_frozen_raw_cc_max": 0.82
+        },
+        {
+          "accession": "O95153",
+          "archive_value": 1.0,
+          "reason": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record",
+          "local_frozen_binary": 1.0
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": 1.0,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)"
+        },
+        {
+          "accession": "P49454",
+          "archive_value": 1.0,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)"
+        },
+        {
+          "accession": "Q8N1N0",
+          "archive_value": 1.0,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record"
+        },
+        {
+          "accession": "Q13023",
+          "archive_value": 0.0,
+          "reason": "DeepPhase no record (archive single is NaN, location/url empty)"
+        },
+        {
+          "accession": "Q6NSI1",
+          "archive_value": 0.0,
+          "reason": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0"
+        },
+        {
+          "accession": "Q5JW98",
+          "archive_value": 0.0,
+          "reason": "PSP no record; DeepPhase no record; IDR=0; LCR=0"
+        },
+        {
+          "accession": "Q8WWX9",
+          "archive_value": 0.0,
+          "reason": "non-standard residue U (selenocysteine); archive Hydropathy/PScore are NaN"
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 0.0,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record"
+        },
+        {
+          "accession": "Q9Y6X1",
+          "archive_value": 0.0,
+          "reason": "IDR high (ESpritz single 1.0)"
+        },
+        {
+          "accession": "Q9Y675",
+          "archive_value": 0.0,
+          "reason": "IDR high (1.0); DeepPhase record (0.950)"
+        },
+        {
+          "accession": "Q9Y6Z2",
+          "archive_value": 0.0,
+          "reason": "IDR high (1.0); short-ish (57 aa); PSP no record; DeepPhase no record"
+        }
+      ],
+      "archive_record_only": true,
+      "archive_discrete_agreement": 0.990948,
+      "note": "Ruling 9: exact equality is asserted only against local_frozen_binary; archive_value is record-only against spec 2.7's measured discrete agreement 0.990948 (n=13257). O75146 archive 0.8199->0 vs local 0.82->1 is the accepted ~0.9% disagreement."
+    },
+    "catGRANULE": {
+      "source": "web-archive",
+      "tolerance": "abs<=1e-2",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 1.43649,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)"
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 5.75,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)"
+        },
+        {
+          "accession": "O75146",
+          "archive_value": 0.413859,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)"
+        },
+        {
+          "accession": "O95153",
+          "archive_value": 1.3006,
+          "reason": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record"
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": 0.828175,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)"
+        },
+        {
+          "accession": "P49454",
+          "archive_value": 1.09139,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)"
+        },
+        {
+          "accession": "Q8N1N0",
+          "archive_value": 0.348468,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record"
+        },
+        {
+          "accession": "Q13023",
+          "archive_value": 1.1616,
+          "reason": "DeepPhase no record (archive single is NaN, location/url empty)"
+        },
+        {
+          "accession": "Q6NSI1",
+          "archive_value": 0.725295,
+          "reason": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0"
+        },
+        {
+          "accession": "Q5JW98",
+          "archive_value": -0.8697,
+          "reason": "PSP no record; DeepPhase no record; IDR=0; LCR=0"
+        },
+        {
+          "accession": "Q8WWX9",
+          "archive_value": -1.18821,
+          "reason": "non-standard residue U (selenocysteine); archive Hydropathy/PScore are NaN"
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 1.23452,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record"
+        },
+        {
+          "accession": "Q9Y6X1",
+          "archive_value": -1.07371,
+          "reason": "IDR high (ESpritz single 1.0)"
+        },
+        {
+          "accession": "Q9Y675",
+          "archive_value": -1.6751,
+          "reason": "IDR high (1.0); DeepPhase record (0.950)"
+        },
+        {
+          "accession": "Q9Y6Z2",
+          "archive_value": -1.3524,
+          "reason": "IDR high (1.0); short-ish (57 aa); PSP no record; DeepPhase no record"
+        }
+      ]
+    },
+    "Phos freq": {
+      "source": "web-archive (record-only; gold = Task 3 local frozen CSV)",
+      "tolerance": "exact (same PSP version)",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 0.04409448818897638,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)",
+          "record_only": true
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 0.06273764258555133,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)",
+          "record_only": true
+        },
+        {
+          "accession": "O75146",
+          "archive_value": 0.017790262172284643,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)",
+          "record_only": true
+        },
+        {
+          "accession": "O95153",
+          "archive_value": 0.010770059235325794,
+          "reason": "DeepCoil max raw_cc 0.8202 sits 2e-4 ABOVE the 0.82 threshold -> binary 1; DeepPhase no record",
+          "record_only": true
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": 0.014767932489451477,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)",
+          "record_only": true
+        },
+        {
+          "accession": "P49454",
+          "archive_value": 0.04110468850353243,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)",
+          "record_only": true
+        },
+        {
+          "accession": "Q8N1N0",
+          "archive_value": 0.011884550084889643,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8274); DeepPhase no record",
+          "record_only": true
+        },
+        {
+          "accession": "Q13023",
+          "archive_value": 0.01207416990081932,
+          "reason": "DeepPhase no record (archive single is NaN, location/url empty)",
+          "record_only": true
+        },
+        {
+          "accession": "Q6NSI1",
+          "archive_value": 0.0,
+          "reason": "PSP no record (Phos freq 0, no POS); DeepPhase no record; LCR=0",
+          "record_only": true
+        },
+        {
+          "accession": "Q5JW98",
+          "archive_value": 0.0,
+          "reason": "PSP no record; DeepPhase no record; IDR=0; LCR=0",
+          "record_only": true
+        },
+        {
+          "accession": "Q8WWX9",
+          "archive_value": 0.0,
+          "reason": "non-standard residue U (selenocysteine); archive Hydropathy/PScore are NaN",
+          "record_only": true
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 0.05486968449931413,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record",
+          "record_only": true
+        },
+        {
+          "accession": "Q9Y6X1",
+          "archive_value": 0.015151515151515152,
+          "reason": "IDR high (ESpritz single 1.0)",
+          "record_only": true
+        },
+        {
+          "accession": "Q9Y675",
+          "archive_value": 0.04225352112676056,
+          "reason": "IDR high (1.0); DeepPhase record (0.950)",
+          "record_only": true
+        },
+        {
+          "accession": "Q9Y6Z2",
+          "archive_value": 0.0,
+          "reason": "IDR high (1.0); short-ish (57 aa); PSP no record; DeepPhase no record",
+          "record_only": true
+        }
+      ]
+    },
+    "DeepPhase": {
+      "source": "bundled DeepPhase TSV",
+      "tolerance": "exact",
+      "accessions": [
+        {
+          "accession": "Q08211",
+          "archive_value": 0.9989901,
+          "reason": "IDR=0 anchor; PSP record (56 sites); DeepPhase record; LCR>0; PLAAC>0; the migrated original fixture (DHX9, 1270 aa)"
+        },
+        {
+          "accession": "P35637",
+          "archive_value": 0.9242153,
+          "reason": "PLAAC prion-like positive (NLLR 0.674); IDR high (0.688); LCR high (0.679); PSP record; DeepPhase record; the migrated original fixture (FUS, 526 aa)"
+        },
+        {
+          "accession": "O75146",
+          "archive_value": 0.92025334,
+          "reason": "DeepCoil max raw_cc 0.8199 sits 1e-4 BELOW the 0.82 threshold -> binary 0 (threshold-boundary case)"
+        },
+        {
+          "accession": "Q6ZUS6",
+          "archive_value": 0.64026505,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8405)"
+        },
+        {
+          "accession": "P49454",
+          "archive_value": 0.4348879,
+          "reason": "DeepCoil binary 1 (max raw_cc 0.8505); PSP record (128 sites)"
+        },
+        {
+          "accession": "Q8WWX9",
+          "archive_value": 0.30500588,
+          "reason": "non-standard residue U (selenocysteine); archive Hydropathy/PScore are NaN"
+        },
+        {
+          "accession": "Q92841",
+          "archive_value": 0.93689895,
+          "reason": "PLAAC positive (NLLR 0.302); PSP record (40 sites); DeepPhase record"
+        },
+        {
+          "accession": "Q9Y6X1",
+          "archive_value": 0.83981943,
+          "reason": "IDR high (ESpritz single 1.0)"
+        },
+        {
+          "accession": "Q9Y675",
+          "archive_value": 0.950122,
+          "reason": "IDR high (1.0); DeepPhase record (0.950)"
+        }
+      ]
+    }
+  },
+  "boundary_coverage": {
+    "LCR>0": [
+      "P35637",
+      "Q08211",
+      "Q92841"
+    ],
+    "DeepCoil=1": [
+      "O95153",
+      "Q6ZUS6",
+      "P49454",
+      "Q8N1N0"
+    ],
+    "DeepCoil_near_threshold_0.82": [
+      "O75146",
+      "O95153"
+    ],
+    "PLAAC_prion_like_positive": [
+      "P35637",
+      "Q92841",
+      "Q08211"
+    ],
+    "IDR_high": [
+      "Q9Y6X1",
+      "Q9Y675",
+      "Q9Y6Z2",
+      "P35637"
+    ],
+    "IDR=0": [
+      "Q08211",
+      "Q5JW98"
+    ],
+    "PSP_has_phosphosites": [
+      "Q08211",
+      "P35637",
+      "P49454",
+      "Q92841"
+    ],
+    "PSP_no_record": [
+      "Q6NSI1",
+      "Q5JW98",
+      "Q9Y6Z2"
+    ],
+    "DeepPhase_has_record": [
+      "Q08211",
+      "P35637",
+      "Q92841",
+      "Q9Y675"
+    ],
+    "DeepPhase_no_record": [
+      "Q13023",
+      "Q6NSI1",
+      "Q5JW98",
+      "Q9Y6Z2",
+      "Q8N1N0"
+    ],
+    "very_short_sequence": [
+      "SHORT"
+    ],
+    "nonstandard_residue": [
+      "Q8WWX9"
+    ]
+  },
+  "synthetic_cases": [
+    "SHORT"
+  ],
+  "predictions": {
+    "modes": [
+      "SaPS",
+      "PdPS",
+      "hSaPS",
+      "hPdPS"
+    ],
+    "accessions": [
+      "O75146",
+      "O95153",
+      "Q08211",
+      "P35637"
+    ],
+    "files": "predict_<mode>_<ACC>.csv (header + one row, exact predict output)",
+    "input": "tests/fixtures/sequences/<ACC>.fasta (archive-2022-02-11 sequence)",
+    "reproduce_command": ".pixi/envs/default/bin/phasepred predict --mode <MODE> --fasta tests/fixtures/sequences/<ACC>.fasta --output <OUT>.csv",
+    "note": "Local frozen four-mode scores (spec 4.5/G8), compared exactly. The hSaPS/hPdPS Phos freq column is marker-gated (Ruling 2).",
+    "regenerated": true
+  },
+  "environment_fingerprint": {
+    "generation_date": "2026-09-21",
+    "generating_command": ".pixi/envs/default/bin/python scripts/derive_test_fixtures.py",
+    "python": "3.12.14",
+    "xgboost": "3.2.0",
+    "pandas": "3.0.5",
+    "numpy": "2.5.3",
+    "scikit_learn": "1.9.0",
+    "model_sha256": {
+      "SaPS": "a369e516fbaf92fa3392ada527f3519963038d928c275a4b263755fc20002835",
+      "PdPS": "f82eff5d5da9277ec225a596f1594a826d1b9311356e7181827ff887395c8607",
+      "hSaPS": "71314225092dcde39e592106272de6afdc6a51371c995e98ab7d0f2d7729a7e0",
+      "hPdPS": "1e42b7b714ea3faf0f862b477655de6af985fd048076cdc8da9527bf393166d4"
+    },
+    "psp_version_marker": "042026",
+    "phos_freq_gold": "local frozen Phos freq column of predict_<mode>_<ACC>.csv; marker-gated (Ruling 2 -- spec 2.7 forbids the web value)"
+  },
+  "environment_fingerprint_note": "Ruling 8: python/xgboost/pandas/numpy/sklearn versions, the four 8f_model_0.joblib sha256 values (spec 2.2) and the frozen generation date are recorded as FACTS. They are NOT a compatibility gate: a purpose-built xgboost 3.4.1 regeneration produced byte-identical CSVs, so downstream comparisons must not skip or fail on the xgboost minor. The hSaPS/hPdPS Phos freq column is marker-gated (Ruling 2)."
+}

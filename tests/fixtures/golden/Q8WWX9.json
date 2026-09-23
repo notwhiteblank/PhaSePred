@@ -1,0 +1,65 @@
+{
+  "accession": "Q8WWX9",
+  "entry_name": "SELM_HUMAN",
+  "organism": "Homo sapiens (Human)",
+  "status": "reviewed",
+  "sequence_length": 145,
+  "seq_source": "archive-2022-02-11",
+  "psp_version_marker": "042026",
+  "tools": {
+    "catgranule": {
+      "single": -1.18821,
+      "residue_length": 95
+    },
+    "plaac": {
+      "single": -0.409,
+      "residue_length": 145
+    },
+    "pscore": {
+      "single": null,
+      "residue_length": 0
+    },
+    "espritz": {
+      "single": 0.14482758620689656,
+      "residue_length": 145,
+      "label_length": 145
+    },
+    "hydropathy": {
+      "single": null,
+      "residue_length": 0
+    },
+    "deepcoil": {
+      "single": 0.0,
+      "raw_cc_max": 0.0066,
+      "raw_cc_length": 145,
+      "binary": 0.0,
+      "sharpen_length": 145
+    },
+    "seg": {
+      "single": 0.16551724137931034,
+      "label_length": 145
+    },
+    "charge": {
+      "FCR": 0.23448275862068965,
+      "label_length": 145,
+      "POS_pos_count": 15,
+      "POS_neg_count": 19
+    },
+    "phos": {
+      "single": 0.0,
+      "site_count": 0,
+      "record_source": "web-archive-2022-02-11"
+    },
+    "deepphase": {
+      "single": 0.30500588,
+      "location": "nucleoplasm,cytosol",
+      "has_record": true
+    }
+  },
+  "phasepred": {
+    "SaPS-8fea": 0.06957899034023285,
+    "PdPS-8fea": 0.11780645698308945,
+    "SaPS-10fea": 0.0534721240401268,
+    "PdPS-10fea": 0.07227925956249237
+  }
+}

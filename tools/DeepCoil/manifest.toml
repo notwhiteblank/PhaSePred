@@ -1,0 +1,18 @@
+# DeepCoil tool-package manifest (PhaSePred S3 tool contract).
+
+name = "deepcoil"
+kind = "env-prefix"
+entry = "./run"
+license = "none"
+redistributable = false
+
+[runtime]
+env_prefix = ".external_envs/deepcoil"
+
+[output]
+format = "deepcoil"
+description = "Writes per-accession '<safe_id>.out' tab-separated files (aa, cc, raw_cc, prob_a, prob_d) into the --out_path directory. PhaSePred v2022 feature = 1.0 if max(raw_cc) >= 0.82 else 0.0."
+
+[install]
+command = "bash tools/DeepCoil/install.sh"
+hint = "DeepCoil has no upstream license (not redistributable). Build the isolated Python 3.8 conda env with deepcoil==2.0.2: bash tools/DeepCoil/install.sh (env at .external_envs/deepcoil; override with DEEPCOIL_ENV_PREFIX)."

@@ -1,0 +1,58 @@
+PhaSePred
+Copyright (c) 2026 Tingting Li Lab, Department of Biochemistry and Molecular
+Biology, School of Basic Medical Sciences, Peking University.
+
+This product is licensed under the MIT License; see LICENSE.
+
+Third-party components
+======================
+
+Vendored in this repository
+---------------------------
+
+PLAAC   MIT (Whitehead Institute, BBRI, UMass)
+        License text: tools/PLAAC/plaac-master/LICENSE.TXT
+        Usage and provenance: tools/PLAAC/README.md
+
+PScore  CC-BY-4.0 (Vernon et al., eLife 2018)
+        Attribution is required by the licence. Source and terms:
+        tools/PScore/README.md. The PScore DBS data is not redistributed;
+        tools/PScore/install.sh fetches it.
+
+SEG     NCBI public-domain convention
+        tools/SEG/README.md
+
+DeepPhase lookup table   MIT
+        Redistributed with the package. Licence text and attribution:
+        src/phasepred/data/deepphase/LICENSE and
+        src/phasepred/data/deepphase/NOTICE
+
+Installed by the user, not redistributed here
+---------------------------------------------
+
+ESpritz           Tosatto academic licence; the archive must be supplied by the
+                  user. tools/ESpritz/README.md
+DeepCoil          tools/DeepCoil/README.md
+PhosphoSitePlus   CC-BY-NC-SA-3.0; redistribution is not permitted, so
+                  tools/PhosphoSitePlus/install.sh fetches it after
+                  registration. tools/PhosphoSitePlus/README.md
+LocalCIDER        GPL-2.0, a separate PyPI dependency. It supplies both the
+                  Hydropathy and FCR feature columns; there is currently no
+                  equivalent non-GPL implementation and no configuration
+                  switch. tools/LocalCIDER/README.md
+
+Every tool directory also carries a machine-readable manifest.toml whose
+`license` and `redistributable` fields are the authoritative statement for
+that component; `phasepred check-tools` prints both.
+
+Other attributions
+==================
+
+The catGRANULE scoring implementation derives from Bolognesi et al. 2016
+(Cell Reports 16:222-231) and is provided by the separate `catgranule`
+package under the MIT License.
+
+PhaSePred reproduces the models and evaluation of Chen et al. 2022,
+"Screening membraneless organelle participants with machine-learning models
+that integrate multimodal features", PNAS 119(24) e2115369119.
+https://doi.org/10.1073/pnas.2115369119

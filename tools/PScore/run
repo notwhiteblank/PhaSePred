@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# PScore contract runner.
+#
+#   ./run --check                 verify predictor script + DBS data (exit 0/1)
+#   ./run <in.fasta> [pscore args...]   run the eLife PScore predictor
+#
+# Output: one "PScore:  <value>  >ACC" line per scored accession on stdout
+# (or in the file given via -output).
+set -euo pipefail
+
+pkg_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+src_dir="$pkg_dir/SourceCodeS2"
+script="$src_dir/elife_phase_separation_predictor.py"
+
+if [[ "${1:-}" == "--check" ]]; then
+  if [[ ! -f "$script" ]]; then
+    echo "PScore predictor script missing: $script" >&2
+    exit 1
+  fi
+  if [[ ! -d "$src_dir/DBS" ]]; then
+    echo "PScore DBS data missing: $src_dir/DBS (gitignored). Extract via: bash $pkg_dir/install.sh" >&2
+    exit 1
+  fi
+  exit 0
+fi
+
+if [[ $# -lt 1 ]]; then
+  cat >&2 <<EOF
+Usage: $0 <in.fasta> [-output out.tsv -overwrite -mute ...]
+
+Runs the vendored eLife PScore source script from its SourceCodeS2/ dir
+(the predictor reads DBs relative to its own location).
+EOF
+  exit 2
+fi
+
+if [[ ! -f "$script" ]]; then
+  echo "PScore predictor script missing: $script" >&2
+  exit 1
+fi
+
+python_cmd=""
+for cand in "${PHASEPRED_PYTHON:-}" python3 python; do
+  [[ -z "$cand" ]] && continue
+  if command -v "$cand" >/dev/null 2>&1 && "$cand" -c "import numpy" >/dev/null 2>&1; then
+    python_cmd="$cand"
+    break
+  fi
+done
+if [[ -z "$python_cmd" ]]; then
+  echo "No Python 3.12+ interpreter with numpy found (PScore needs numpy). Try: PHASEPRED_PYTHON=/path/to/python $0 ..." >&2
+  exit 1
+fi
+
+cd "$src_dir"
+exec "$python_cmd" "$script" "$@"

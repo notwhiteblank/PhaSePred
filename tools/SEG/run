@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# SEG contract runner.
+#
+#   ./run --check                 verify the binary is built (exit 0/1)
+#   ./run <in.fasta> [args...]    run SEG (default args: 12 2.2 2.5 -x)
+#
+# Standard output is the SEG-masked FASTA (headers preserved, low-complexity
+# residues replaced by lowercase / 'x' when -x is passed).
+set -euo pipefail
+
+pkg_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+bin="$pkg_dir/seg"
+
+if [[ "${1:-}" == "--check" ]]; then
+  if [[ ! -x "$bin" ]]; then
+    echo "SEG binary not built at $bin. Build it with: bash $pkg_dir/install.sh" >&2
+    exit 1
+  fi
+  exit 0
+fi
+
+if [[ $# -lt 1 ]]; then
+  cat >&2 <<EOF
+Usage: $0 <in.fasta> [window 12] [locut 2.2] [hicut 2.5] [-x]
+
+Runs the vendored NCBI SEG binary. When only the input FASTA is given, the
+paper parameters (12 2.2 2.5 -x) are applied automatically.
+EOF
+  exit 2
+fi
+
+if [[ ! -x "$bin" ]]; then
+  cat >&2 <<EOF
+SEG binary not built at $bin
+
+Build it with:
+  bash $pkg_dir/install.sh
+EOF
+  exit 1
+fi
+
+if [[ $# -eq 1 ]]; then
+  exec "$bin" "$1" 12 2.2 2.5 -x
+fi
+
+exec "$bin" "$@"

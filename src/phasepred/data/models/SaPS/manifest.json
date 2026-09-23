@@ -1,0 +1,35 @@
+{
+  "task": "SaPS",
+  "feature_columns": [
+    "Hydropathy",
+    "FCR",
+    "IDR",
+    "LCR",
+    "PScore",
+    "PLAAC",
+    "catGRANULE",
+    "DeepCoil"
+  ],
+  "feature_definitions_version": "v2022",
+  "protocol": "paper-default",
+  "n_models": 10,
+  "n_neg_ratio": 2,
+  "n_folds": 5,
+  "seed": 42,
+  "train_sheet": "SaPS",
+  "trained_at": "2026-09-16T21:56:37Z",
+  "xgboost_version": "3.2.0",
+  "auc_cv": 0.8607288284023668,
+  "auc_cv_ensemble": 0.8826724260355029,
+  "auc_test_s3": 0.8147863025163637,
+  "input_tables": {
+    "train": {
+      "path": "data/processed/chen2022_s2s3_base-features_train.tsv",
+      "sha256": "df9081b001936adb678de36ac186811df7ed0f5db1e09079e6e788049d385bb7"
+    },
+    "test": {
+      "path": "data/processed/chen2022_s2s3_base-features_test.tsv",
+      "sha256": "b26253f921217375f4873d5714058fcf20925729b21b8381a4eba27f3940ff9a"
+    }
+  }
+}

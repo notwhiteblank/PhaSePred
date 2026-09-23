@@ -1,0 +1,29 @@
+{
+  "feature_definitions_version": "v2022",
+  "protocol": "paper-default",
+  "seed": 42,
+  "n_models": 10,
+  "n_neg_ratio": 2,
+  "n_folds": 5,
+  "trained_at": "2026-09-16T21:56:37Z",
+  "xgboost_version": "3.2.0",
+  "commit": "565bddf36fdac5e22f21d9df99ecd4726438d3de",
+  "input_tables": {
+    "base_train": {
+      "path": "data/processed/chen2022_s2s3_base-features_train.tsv",
+      "sha256": "df9081b001936adb678de36ac186811df7ed0f5db1e09079e6e788049d385bb7"
+    },
+    "base_test": {
+      "path": "data/processed/chen2022_s2s3_base-features_test.tsv",
+      "sha256": "b26253f921217375f4873d5714058fcf20925729b21b8381a4eba27f3940ff9a"
+    },
+    "human_train": {
+      "path": "data/processed/chen2022_s2s3_human-features_train.tsv",
+      "sha256": "fedecb3850263de9b561a6a5685f91b3f1235135b4baf6aca4504031969cad59"
+    },
+    "human_test": {
+      "path": "data/processed/chen2022_s2s3_human-features_test.tsv",
+      "sha256": "cb36429d16f575785213dc625708c302e093129e4dc29ddad60facad36928134"
+    }
+  }
+}

@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# DeepCoil contract runner.
+#
+#   ./run --check                 verify isolated env bin/deepcoil (exit 0/1)
+#   ./run [deepcoil args...]      run $DEEPCOIL_ENV_PREFIX/bin/deepcoil
+#
+# 8-feature pipeline runs: ./run -i in.fasta -out_path OUT -n_cpu N
+# DeepCoil writes per-accession <safe_id>.out files into OUT (tab-separated:
+# aa, cc, raw_cc, prob_a, prob_d). PhaSePred binarizes max(raw_cc) >= 0.82.
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+
+# Prefix resolution (Ruling 10) — keep in sync with tools/DeepCoil/install.sh
+# and phasepred.tool_paths._resolve_env_prefix. The three-way agreement is
+# asserted by test_deepcoil_three_way_prefix_agreement, so a drift breaks it.
+user_root() {
+  if [[ -n "${PHASEPRED_DATA_ROOT:-}" ]]; then
+    printf '%s\n' "$PHASEPRED_DATA_ROOT"
+  elif [[ -n "${XDG_DATA_HOME:-}" ]]; then
+    printf '%s\n' "$XDG_DATA_HOME/phasepred"
+  elif [[ -n "${HOME:-}" ]]; then
+    printf '%s\n' "$HOME/.local/share/phasepred"
+  else
+    return 1
+  fi
+}
+
+resolve_prefix() {
+  local user legacy
+  if [[ -n "${DEEPCOIL_ENV_PREFIX:-}" ]]; then
+    printf '%s\n' "$DEEPCOIL_ENV_PREFIX"
+    return 0
+  fi
+  if user="$(user_root)"; then
+    user="$user/envs/deepcoil"
+    if [[ -x "$user/bin/deepcoil" || -x "$user/bin/python" ]]; then
+      printf '%s\n' "$user"
+      return 0
+    fi
+  fi
+  legacy="$repo_root/.external_envs/deepcoil"
+  if [[ -x "$legacy/bin/deepcoil" || -x "$legacy/bin/python" ]]; then
+    printf '%s\n' "$legacy"
+    return 0
+  fi
+  return 1
+}
+
+if ! env_prefix="$(resolve_prefix)"; then
+  echo "DeepCoil env prefix not found (looked at DEEPCOIL_ENV_PREFIX," >&2
+  echo "  <user_data_root>/envs/deepcoil and .external_envs/deepcoil)." >&2
+  echo "  Install it with: bash tools/DeepCoil/install.sh" >&2
+  exit 1
+fi
+exe="$env_prefix/bin/deepcoil"
+
+if [[ "${1:-}" == "--check" ]]; then
+  if [[ ! -x "$exe" ]]; then
+    echo "DeepCoil executable not found: $exe (install: bash tools/DeepCoil/install.sh)" >&2
+    exit 1
+  fi
+  exit 0
+fi
+
+if [[ ! -x "$exe" ]]; then
+  cat >&2 <<EOF
+DeepCoil executable not found: $exe
+
+Create the isolated environment with:
+  bash tools/DeepCoil/install.sh
+(or point DEEPCOIL_ENV_PREFIX at an existing prefix)
+EOF
+  exit 1
+fi
+
+exec "$exe" "$@"

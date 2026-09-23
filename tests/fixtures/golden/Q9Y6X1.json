@@ -1,0 +1,65 @@
+{
+  "accession": "Q9Y6X1",
+  "entry_name": "SERP1_HUMAN",
+  "organism": "Homo sapiens (Human)",
+  "status": "reviewed",
+  "sequence_length": 66,
+  "seq_source": "archive-2022-02-11",
+  "psp_version_marker": "042026",
+  "tools": {
+    "catgranule": {
+      "single": -1.07371,
+      "residue_length": 16
+    },
+    "plaac": {
+      "single": -0.402,
+      "residue_length": 66
+    },
+    "pscore": {
+      "single": null,
+      "residue_length": 0
+    },
+    "espritz": {
+      "single": 1.0,
+      "residue_length": 66,
+      "label_length": 66
+    },
+    "hydropathy": {
+      "single": 0.5003367003367004,
+      "residue_length": 66
+    },
+    "deepcoil": {
+      "single": 0.0,
+      "raw_cc_max": 0.0602,
+      "raw_cc_length": 66,
+      "binary": 0.0,
+      "sharpen_length": 66
+    },
+    "seg": {
+      "single": 0.0,
+      "label_length": 66
+    },
+    "charge": {
+      "FCR": 0.19696969696969696,
+      "label_length": 66,
+      "POS_pos_count": 10,
+      "POS_neg_count": 3
+    },
+    "phos": {
+      "single": 0.015151515151515152,
+      "site_count": 1,
+      "record_source": "web-archive-2022-02-11"
+    },
+    "deepphase": {
+      "single": 0.83981943,
+      "location": "endoplasmic reticulum",
+      "has_record": true
+    }
+  },
+  "phasepred": {
+    "SaPS-8fea": 0.07830551266670227,
+    "PdPS-8fea": 0.12252744287252426,
+    "SaPS-10fea": 0.0723477452993393,
+    "PdPS-10fea": 0.11452990770339966
+  }
+}

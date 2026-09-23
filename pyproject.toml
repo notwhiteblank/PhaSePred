@@ -1,0 +1,125 @@
+[project]
+name = "phasepred"
+version = "1.0.0"
+description = "Paper-faithful re-implementation of the PhaSePred phase-separation predictor (Chen et al. 2022, PNAS)."
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "Tingting Li Lab, Department of Biochemistry and Molecular Biology, School of Basic Medical Sciences, Peking University"},
+]
+requires-python = ">=3.12"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+dependencies = [
+    "biopython>=1.85",
+    "catgranule>=1.0,<2",
+    "joblib>=1.5",
+    "localcider>=0.1.21",
+    "matplotlib>=3.8",
+    "numpy>=1.26,<3",
+    "openpyxl>=3.1",
+    "pandas>=2.2",
+    "pydantic>=2.11",
+    "pyarrow>=20.0",
+    "python-calamine>=0.3",
+    "requests>=2.32",
+    "scikit-learn>=1.5",
+    "scipy>=1.13",
+    "shap>=0.46",
+    "tqdm>=4.67",
+    "typer>=0.15",
+    "xgboost>=3.2,<3.3",
+]
+
+[project.scripts]
+phasepred = "phasepred.cli:main"
+
+[project.urls]
+Homepage = "https://www.pnas.org/doi/10.1073/pnas.2115369119"
+Documentation = "https://github.com/NotWhiteBlank/PhaSePred"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+phasepred = [
+    "data/models/**/*.joblib",
+    "data/models/**/*.json",
+    "data/tools/**/*",
+    "data/deepphase/**",
+]
+
+[tool.uv]
+package = true
+
+[tool.uv.sources]
+catgranule = { path = "packages/catgranule", editable = true }
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15",
+    "optuna>=4.8.0",
+    "pytest>=8.3",
+    "ruff>=0.11",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# Vendored tool sources, experiment scratch, and large data trees are not
+# part of the shippable package; the lint gate covers src/ + packages/ + tests/.
+extend-exclude = [
+    "Tools",
+    "PhaSePred_article&data",
+    "support_article",
+    "data",
+    "experiments",
+    "tools",
+    "products",
+    ".external_envs",
+    ".venv",
+    "src/phasepred/data/tools",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.per-file-ignores]
+# Typer's declarative CLI idiom necessarily builds options in argument
+# defaults; ruff's B008 fires on every typer.Option(...) call.
+"src/phasepred/cli.py" = ["B008"]
+"packages/catgranule/src/catgranule/cli.py" = ["B008"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+check_untyped_defs = true
+warn_unused_ignores = true
+no_implicit_optional = true
+exclude = "data/tools"
+# mypy's sqlite cache hits an internal "disk I/O error" when it lives on
+# a network-mounted data volume, so keep the cache on a local filesystem.
+cache_dir = "/tmp/mypy_cache"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "packages/catgranule/tests"]
+pythonpath = ["src", "packages/catgranule/src"]
+markers = [
+    "toolfree: runs without any external feature-tool contract (E7 CI tier)",
+    "tools: requires one or more external feature-tool contracts",
+]

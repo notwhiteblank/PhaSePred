@@ -1,0 +1,22 @@
+# ESpritz tool-package manifest (PhaSePred S3 tool contract).
+
+name = "espritz"
+kind = "perl"
+entry = "./run"
+license = "Tosatto-academic-1.1"
+redistributable = false
+
+[runtime]
+perl = "*"
+
+[[data]]
+path = "tools/ESpritz/espritz"
+note = "Extracted tool tree (Tosatto academic license forbids redistribution; gitignored). Install: bash tools/ESpritz/install.sh"
+
+[output]
+format = "espritz"
+description = "Per-input *.espritz sibling files with two-column residue lines '<state> <score>' (D/O). PhaSePred IDR = D-state fraction over two-column lines only (banner/license lines ignored)."
+
+[install]
+command = "bash tools/ESpritz/install.sh"
+hint = "ESpritz is academic-licensed (no redistribution): download espritz.zip from https://protein.bio.unipd.it/espritz/ and run bash tools/ESpritz/install.sh (or set PHASEPRED_ESPRITZ_DIR)."

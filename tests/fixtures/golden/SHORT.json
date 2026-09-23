@@ -1,0 +1,13 @@
+{
+  "accession": "SHORT",
+  "entry_name": "SYNTHETIC_SHORT",
+  "organism": "synthetic",
+  "status": "synthetic",
+  "sequence_length": 6,
+  "seq_source": "synthetic",
+  "psp_version_marker": "042026",
+  "tools": {},
+  "phasepred": {},
+  "synthetic": true,
+  "role": "very short sequence (<7 residues) boundary; SYNTHETIC -- the archive's shortest reviewed human sequence is 55 aa, so this case cannot be derived"
+}

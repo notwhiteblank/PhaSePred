@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+# LocalCIDER contract runner (kind=python-library).
+#
+#   ./run --check                 verify a Python with importable localcider
+#   ./run <in.fasta> [...]        core sequence-properties JSON on stdout
+#
+# Resolves the interpreter from $PHASEPRED_PYTHON first, then a widened list of
+# common interpreter names and repo-relative virtualenvs, requiring an
+# importable `localcider`. LocalCIDER is consumed from PyPI (GPL-2.0, not
+# vendored); phasepred's features.py keeps importing it in-process — this
+# contract is for standalone discovery/invocation.
+#
+# A bash runner cannot know the *caller's* sys.executable, so $PHASEPRED_PYTHON
+# is the recommended way for a Python caller to pin the same interpreter it
+# runs under (Ruling 1). The PATH/relative candidates make a bare invocation
+# work from a dev checkout; `install.sh --check` mirrors this list.
+set -euo pipefail
+
+pkg_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+python_candidates() {
+  local repo_root cand rel
+  if [[ -n "${PHASEPRED_PYTHON:-}" ]]; then
+    echo "$PHASEPRED_PYTHON"
+  fi
+  for cand in python3.13 python3.12 python3 python; do
+    if command -v "$cand" >/dev/null 2>&1; then
+      echo "$cand"
+    fi
+  done
+  repo_root="$(cd "$pkg_dir/../.." && pwd)"
+  for rel in ".venv/bin/python" ".pixi/envs/default/bin/python"; do
+    if [[ -x "$repo_root/$rel" ]]; then
+      echo "$repo_root/$rel"
+    fi
+  done
+}
+
+resolve_python() {
+  local cand
+  while IFS= read -r cand; do
+    [[ -z "$cand" ]] && continue
+    if "$cand" -c "import localcider" >/dev/null 2>&1; then
+      echo "$cand"
+      return 0
+    fi
+  done < <(python_candidates)
+  return 1
+}
+
+if [[ "${1:-}" == "--check" ]]; then
+  py="$(resolve_python)" || {
+    echo "LocalCIDER: no interpreter with importable localcider. Install: bash $pkg_dir/install.sh (or set PHASEPRED_PYTHON)" >&2
+    exit 1
+  }
+  echo "LocalCIDER: ok via $py"
+  exit 0
+fi
+
+py="$(resolve_python)" || {
+  cat >&2 <<EOF
+LocalCIDER: no interpreter with importable localcider found.
+
+LocalCIDER is 'kind=python-library' (GPL-2.0) and is consumed from PyPI --
+it is NOT vendored. Install it into the environment that runs predict:
+  bash $pkg_dir/install.sh
+or point the interpreter explicitly:
+  PHASEPRED_PYTHON=/path/to/python $0 <in.fasta>
+EOF
+  exit 1
+}
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: $0 <in.fasta>" >&2
+  exit 2
+fi
+
+exec "$py" - <<'PY' "$@"
+import json
+import sys
+
+from localcider.sequenceParameters import SequenceParameters
+
+AROMATIC = "FWY"
+
+
+def parse_fasta(path: str) -> list[tuple[str, str]]:
+    records: list[tuple[str, str]] = []
+    current: str | None = None
+    parts: list[str] = []
+    with open(path, encoding="utf-8") as handle:
+        for line in handle:
+            line = line.strip()
+            if not line:
+                continue
+            if line.startswith(">"):
+                if current is not None:
+                    records.append((current, "".join(parts)))
+                current = line[1:].split()[0]
+                parts = []
+            else:
+                parts.append(line)
+    if current is not None:
+        records.append((current, "".join(parts)))
+    return records
+
+
+def main() -> int:
+    if len(sys.argv) < 2:
+        print("usage: run <in.fasta>", file=sys.stderr)
+        return 2
+    out: list[dict[str, object]] = []
+    for accession, sequence in parse_fasta(sys.argv[1]):
+        seq_upper = sequence.upper()
+        sp = SequenceParameters(seq_upper)
+        aa = sp.get_amino_acid_fractions()
+        out.append(
+            {
+                "accession": accession,
+                "length": sp.get_length(),
+                "uversky_hydropathy": sp.get_uversky_hydropathy(),
+                "fcr": sp.get_FCR(),
+                "ncpr": sp.get_NCPR(),
+                "kappa": sp.get_kappa(),
+                "scd": sp.get_SCD(),
+                "mean_net_charge": sp.get_mean_net_charge(),
+                "aromatic_fraction": sum(aa.get(r, 0.0) for r in AROMATIC),
+            }
+        )
+    json.dump(out, sys.stdout, indent=2)
+    sys.stdout.write("\n")
+    return 0
+
+
+sys.exit(main())
+PY

@@ -1,0 +1,45 @@
+[workspace]
+name = "phasepred"
+version = "1.0.0"
+description = "Paper-faithful PhaSePred phase-separation predictor (Chen et al. 2022 PNAS)"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[dependencies]
+openjdk = ">=17,<22"
+perl = ">=5.32"
+pytest = ">=8.3"
+ruff = ">=0.11"
+mypy = ">=1.15"
+
+[pypi-dependencies]
+phasepred = { path = ".", editable = true }
+catgranule = { path = "packages/catgranule", editable = true }
+# Pin xgboost to the version the committed Product A / catgranule artifacts
+# were trained with (3.2.x); a later minor could change tree construction and
+# break bit-for-bit retrain reproducibility.
+xgboost = "==3.2.0"
+
+[tasks]
+test = "pytest"
+check-tools = "phasepred check-tools"
+predict = "phasepred predict"
+features-from-fasta = "phasepred features-from-fasta"
+tool-features = "phasepred tool-features"
+lint = "ruff check ."
+typecheck = "mypy src"
+retrain = "python scripts/train_phasepred.py"
+# Write to the gitignored scratch path: the committed validation_report.json at
+# the repository root is regenerated deliberately with --sequences, and a bare
+# default run would replace it with a skip-heavy report and dirty the tree.
+validate = "python scripts/validate_phasepred.py --output runs/validation_report.json"
+
+[feature.py312.dependencies]
+python = "3.12.*"
+
+[feature.py313.dependencies]
+python = "3.13.*"
+
+[environments]
+default = ["py312"]
+py313 = ["py313"]

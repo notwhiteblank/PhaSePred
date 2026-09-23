@@ -1,0 +1,40 @@
+[project]
+name = "catgranule"
+version = "1.0.1"
+description = "catGRANULE phase-separation propensity scoring (Bolognesi et al. 2016, distil-red surrogate)."
+readme = "README.md"
+license = "MIT"
+authors = [
+    {name = "Tingting Li Lab, Department of Biochemistry and Molecular Biology, School of Basic Medical Sciences, Peking University"},
+]
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26,<3",
+    "typer>=0.15",
+    "xgboost>=3.2,<4",
+]
+
+[project.scripts]
+catgranule = "catgranule.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+catgranule = ["weights/*.json", "weights/*.ubj"]
+
+[project.urls]
+Homepage = "https://www.pnas.org/doi/10.1073/pnas.2115369119"
+Documentation = "https://github.com/NotWhiteBlank/PhaSePred"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

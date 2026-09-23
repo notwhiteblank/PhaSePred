@@ -1,0 +1,18 @@
+# LocalCIDER tool-package manifest (PhaSePred S3 tool contract).
+
+name = "localcider"
+kind = "python-library"
+entry = "./run"
+license = "GPL-2.0"
+redistributable = true
+
+[runtime]
+python = ">=3.10"
+
+[output]
+format = "json"
+description = "JSON array per FASTA record: length, uversky_hydropathy, fcr, ncpr, kappa, scd, mean_net_charge, aromatic_fraction."
+
+[install]
+command = "bash tools/LocalCIDER/install.sh"
+hint = "pip install localcider==0.1.21 (GPL-2.0, consumed from PyPI, NOT vendored): bash tools/LocalCIDER/install.sh"

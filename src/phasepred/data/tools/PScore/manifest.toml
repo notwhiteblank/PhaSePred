@@ -1,0 +1,31 @@
+# PScore tool-package manifest (PhaSePred S3 tool contract).
+
+name = "pscore"
+kind = "python"
+entry = "./run"
+license = "CC-BY-4.0"
+redistributable = true
+
+# Pinned download + integrity metadata (Ruling 3). The eLife tgz is a static
+# archive (upstream last-modified 2019-05-20), so its sha256 is a *hard* gate: a
+# mismatch aborts the install and removes the partial download. Contrast
+# tools/PhosphoSitePlus/manifest.toml, whose rolling dataset uses
+# `sha256_policy = "known-version"`. Measured 2026-09-17 on the local copy.
+download_url = "https://cdn.elifesciences.org/articles/31486/elife-31486-code2-v2.tgz"
+sha256 = "d9863dbc293101d7618cb2e4004d2a4c8a4d5799e5b1e73ea596b7a68f272052"
+sha256_policy = "hard"
+
+[runtime]
+python = ">=3.12"
+
+[[data]]
+path = "tools/PScore/SourceCodeS2/DBS"
+note = "Pickled interaction grids/frequency tables + WeightSettings.txt (135 MB, gitignored). Extract from elife-31486-code2-v2.tgz (see install.sh); required at runtime."
+
+[output]
+format = "text"
+description = "One 'PScore:  <value>  >ACC' line per scored accession (via stdout or -output FILE). PhaSePred parses the numeric PScore column."
+
+[install]
+command = "bash tools/PScore/install.sh"
+hint = "PScore code is vendored (CC-BY 4.0, eLife 31486). Data (DBS) is gitignored: bash tools/PScore/install.sh --check verifies script + DBS."

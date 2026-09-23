@@ -1,0 +1,74 @@
+{
+  "accession": "O75146",
+  "entry_name": "HIP1R_HUMAN",
+  "organism": "Homo sapiens (Human)",
+  "status": "reviewed",
+  "sequence_length": 1068,
+  "seq_source": "archive-2022-02-11",
+  "psp_version_marker": "042026",
+  "tools": {
+    "catgranule": {
+      "single": 0.413859,
+      "residue_length": 1018
+    },
+    "plaac": {
+      "single": -0.331,
+      "residue_length": 1068
+    },
+    "pscore": {
+      "single": 0.51,
+      "residue_length": 1065
+    },
+    "espritz": {
+      "single": 0.04119850187265917,
+      "residue_length": 1068,
+      "label_length": 1068
+    },
+    "hydropathy": {
+      "single": 0.4441843528922183,
+      "residue_length": 1068
+    },
+    "deepcoil": {
+      "single": 0.0,
+      "raw_cc_max": 0.8199,
+      "raw_cc_length": 1068,
+      "binary": 0.0,
+      "sharpen_length": 1068,
+      "local_frozen_binary": 1.0,
+      "local_frozen_raw_cc_max": 0.82,
+      "disagreement": {
+        "archive_raw_cc_max": 0.8199,
+        "archive_binary": 0.0,
+        "local_frozen_raw_cc_max": 0.82,
+        "local_frozen_binary": 1.0,
+        "cause": "the archive and the local re-run differ in the fourth decimal across the >= 0.82 binarisation, which flips the 0/1 result; spec 2.7 measured discrete agreement 0.990948 (n=13257), so ~0.9% disagreement is accepted norm (Ruling 9)"
+      }
+    },
+    "seg": {
+      "single": 0.08426966292134831,
+      "label_length": 1068
+    },
+    "charge": {
+      "FCR": 0.2762172284644195,
+      "label_length": 1068,
+      "POS_pos_count": 140,
+      "POS_neg_count": 155
+    },
+    "phos": {
+      "single": 0.017790262172284643,
+      "site_count": 19,
+      "record_source": "web-archive-2022-02-11"
+    },
+    "deepphase": {
+      "single": 0.92025334,
+      "location": "vesicles,cytosol",
+      "has_record": true
+    }
+  },
+  "phasepred": {
+    "SaPS-8fea": 0.3078671991825104,
+    "PdPS-8fea": 0.35170620679855347,
+    "SaPS-10fea": 0.054692696779966354,
+    "PdPS-10fea": 0.25820058584213257
+  }
+}

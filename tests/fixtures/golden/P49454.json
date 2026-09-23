@@ -1,0 +1,65 @@
+{
+  "accession": "P49454",
+  "entry_name": "CENPF_HUMAN",
+  "organism": "Homo sapiens (Human)",
+  "status": "reviewed",
+  "sequence_length": 3114,
+  "seq_source": "archive-2022-02-11",
+  "psp_version_marker": "042026",
+  "tools": {
+    "catgranule": {
+      "single": 1.09139,
+      "residue_length": 3064
+    },
+    "plaac": {
+      "single": -0.135,
+      "residue_length": 3114
+    },
+    "pscore": {
+      "single": 2.82,
+      "residue_length": 3111
+    },
+    "espritz": {
+      "single": 0.060051380860629416,
+      "residue_length": 3114,
+      "label_length": 3114
+    },
+    "hydropathy": {
+      "single": 0.3982373510311884,
+      "residue_length": 3114
+    },
+    "deepcoil": {
+      "single": 1.0,
+      "raw_cc_max": 0.8505,
+      "raw_cc_length": 3114,
+      "binary": 1.0,
+      "sharpen_length": 3114
+    },
+    "seg": {
+      "single": 0.08477842003853564,
+      "label_length": 3114
+    },
+    "charge": {
+      "FCR": 0.33590237636480413,
+      "label_length": 3114,
+      "POS_pos_count": 443,
+      "POS_neg_count": 603
+    },
+    "phos": {
+      "single": 0.04110468850353243,
+      "site_count": 128,
+      "record_source": "web-archive-2022-02-11"
+    },
+    "deepphase": {
+      "single": 0.4348879,
+      "location": "nucleoplasm",
+      "has_record": true
+    }
+  },
+  "phasepred": {
+    "SaPS-8fea": 0.6366602182388306,
+    "PdPS-8fea": 0.684110701084137,
+    "SaPS-10fea": 0.7555242776870728,
+    "PdPS-10fea": 0.8648921251296997
+  }
+}

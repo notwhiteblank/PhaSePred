@@ -1,0 +1,17 @@
+name: phasepred
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - openjdk>=17,<22
+  - perl>=5.32
+  - make
+  - c-compiler
+  - pytest>=8.3
+  - ruff>=0.11
+  - mypy>=1.15
+  - pip
+  - pip:
+      - --editable .
+      - --editable packages/catgranule
+      - xgboost==3.2.0

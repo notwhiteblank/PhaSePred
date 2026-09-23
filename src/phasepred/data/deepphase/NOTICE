@@ -1,0 +1,62 @@
+DeepPhase bundled score table — provenance notice
+=================================================
+
+Upstream project : DeepPhase — "Proteome-scale analysis of phase-separated
+                   proteins in immunofluorescence images" (Yu et al., 2020).
+Upstream URL     : https://github.com/cheneyyu/DeepPhase
+Archive commit   : f19659134688542392c56dd45f0da915c67111a8 (branch master;
+                   upstream's last push was 2020-05-24). Recorded in
+                   docs/DATA_SOURCES.md when the supplement was archived.
+Licence          : MIT, Copyright (c) 2020 Chunyu Yu. The full text is in the
+                   adjacent LICENSE file. The derived table is therefore
+                   redistributable and ships inside the phasepred wheel.
+
+Source file      : tableS3.xlsx
+Source sha256    : d3a72a776cb62059f62fe161f5a3fbedb08c9bc0d23b914612a17ab09a3ea7bf
+Source size      : 3,920,266 bytes
+Sheet name       : tableS3
+Source columns   : Swiss-Prot ID, DeepPhase_score
+
+Derivation
+----------
+Script           : scripts/derive_deepphase_tsv.py (committed, deterministic,
+                   no network; run from the repository root).
+Derivation date  : 2026-09-17
+Output file      : src/phasepred/data/deepphase/deepphase_scores.tsv
+Output sha256    : d1147a8df0d041e877010eb7dddf5f343181043d028256a0d90c1aef94a88569
+Output size      : 206,855 bytes
+
+Row accounting
+--------------
+Raw rows: 12073
+Dropped rows: 242
+Retained rows: 11831
+
+The 242 dropped rows have a blank Swiss-Prot ID in the workbook (pandas reads
+them as NaN). They all carry a DeepPhase_score, but with no accession they can
+never be looked up, and a NaN ID can never equal any string accession. There
+were 0 empty-string IDs, 0 literal "nan" strings and 0 missing scores among the
+remaining rows, and 0 duplicate non-null IDs. 12073 - 242 = 11831.
+
+This is the same filter the xlsx branch of phasepred.tools.lookup_deepphase
+already applies, so preferring this TSV changes no score.
+
+Deliberate header rename
+------------------------
+The workbook spells the accession column "Swiss-Prot ID" (with a space); this
+TSV's header is exactly:
+
+    Swiss-Prot_ID<TAB>DeepPhase_score
+
+(underscore, tab separated). The rename is deliberate and couples to the
+hardcoded ``id_column = "Swiss-Prot_ID"`` in the TSV branch of
+``phasepred.tools.lookup_deepphase``. Do not "fix" the TSV header back to a
+space: that silently breaks the lookup. The lookup's xlsx fallback still reads
+the space form.
+
+Formatting
+----------
+Two columns, one header line, rows sorted lexicographically by Swiss-Prot_ID,
+scores written with repr(float) for exact round-trip, LF line endings and a
+single trailing newline. The script writes no wall-clock value, so re-running
+it against the same workbook reproduces the file byte for byte.

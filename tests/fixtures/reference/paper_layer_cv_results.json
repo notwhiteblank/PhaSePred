@@ -1,0 +1,191 @@
+{
+  "mode": "paper",
+  "rows": [
+    {
+      "row": "SaPS-8",
+      "task": "SaPS",
+      "n_features": 8,
+      "columns": [
+        "Hydropathy",
+        "FCR",
+        "IDR",
+        "LCR",
+        "PScore",
+        "PLAAC",
+        "catGRANULE",
+        "DeepCoil"
+      ],
+      "source": "sheet",
+      "cv_auc": 0.882672,
+      "cv_fold_aucs": [
+        0.913462,
+        0.805473,
+        0.901627,
+        0.9272,
+        0.8656
+      ],
+      "paper_auc": 0.862,
+      "delta": 0.020672,
+      "pass_delta_le_0_01": false,
+      "n_pos": 128,
+      "n_neg_pool": 48158
+    },
+    {
+      "row": "hSaPS-8",
+      "task": "hSaPS",
+      "n_features": 8,
+      "columns": [
+        "Hydropathy",
+        "FCR",
+        "IDR",
+        "LCR",
+        "PScore",
+        "PLAAC",
+        "catGRANULE",
+        "DeepCoil"
+      ],
+      "source": "sheet",
+      "cv_auc": 0.873978,
+      "cv_fold_aucs": [
+        0.788194,
+        0.857639,
+        0.895833,
+        0.881944,
+        0.946281
+      ],
+      "paper_auc": 0.878,
+      "delta": -0.004022,
+      "pass_delta_le_0_01": true,
+      "n_pos": 59,
+      "n_neg_pool": 8801
+    },
+    {
+      "row": "hSaPS-10",
+      "task": "hSaPS",
+      "n_features": 10,
+      "columns": [
+        "Hydropathy",
+        "FCR",
+        "IDR",
+        "LCR",
+        "PScore",
+        "PLAAC",
+        "catGRANULE",
+        "DeepCoil",
+        "Phos freq",
+        "DeepPhase"
+      ],
+      "source": "sheet",
+      "cv_auc": 0.933333,
+      "cv_fold_aucs": [
+        0.84375,
+        0.920139,
+        0.951389,
+        0.951389,
+        1.0
+      ],
+      "paper_auc": 0.924,
+      "delta": 0.009333,
+      "pass_delta_le_0_01": true,
+      "n_pos": 59,
+      "n_neg_pool": 8801
+    },
+    {
+      "row": "PdPS-8",
+      "task": "PdPS",
+      "n_features": 8,
+      "columns": [
+        "Hydropathy",
+        "FCR",
+        "IDR",
+        "LCR",
+        "PScore",
+        "PLAAC",
+        "catGRANULE",
+        "DeepCoil"
+      ],
+      "source": "sheet",
+      "cv_auc": 0.76532,
+      "cv_fold_aucs": [
+        0.772309,
+        0.786101,
+        0.749054,
+        0.77934,
+        0.739796
+      ],
+      "paper_auc": 0.739,
+      "delta": 0.02632,
+      "pass_delta_le_0_01": false,
+      "n_pos": 214,
+      "n_neg_pool": 48158
+    },
+    {
+      "row": "hPdPS-8",
+      "task": "hPdPS",
+      "n_features": 8,
+      "columns": [
+        "Hydropathy",
+        "FCR",
+        "IDR",
+        "LCR",
+        "PScore",
+        "PLAAC",
+        "catGRANULE",
+        "DeepCoil"
+      ],
+      "source": "sheet",
+      "cv_auc": 0.767573,
+      "cv_fold_aucs": [
+        0.71875,
+        0.84349,
+        0.804709,
+        0.759003,
+        0.711911
+      ],
+      "paper_auc": 0.771,
+      "delta": -0.003427,
+      "pass_delta_le_0_01": true,
+      "n_pos": 96,
+      "n_neg_pool": 8801
+    },
+    {
+      "row": "hPdPS-10",
+      "task": "hPdPS",
+      "n_features": 10,
+      "columns": [
+        "Hydropathy",
+        "FCR",
+        "IDR",
+        "LCR",
+        "PScore",
+        "PLAAC",
+        "catGRANULE",
+        "DeepCoil",
+        "Phos freq",
+        "DeepPhase"
+      ],
+      "source": "sheet",
+      "cv_auc": 0.840602,
+      "cv_fold_aucs": [
+        0.7875,
+        0.934903,
+        0.82687,
+        0.789474,
+        0.864266
+      ],
+      "paper_auc": 0.827,
+      "delta": 0.013602,
+      "pass_delta_le_0_01": false,
+      "n_pos": 96,
+      "n_neg_pool": 8801
+    }
+  ],
+  "targets": {
+    "SaPS-8": 0.862,
+    "hSaPS-8": 0.878,
+    "hSaPS-10": 0.924,
+    "PdPS-8": 0.739,
+    "hPdPS-8": 0.771,
+    "hPdPS-10": 0.827
+  }
+}

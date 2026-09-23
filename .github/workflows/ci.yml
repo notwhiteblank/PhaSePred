@@ -1,0 +1,111 @@
+# Restricted CI (D32). It runs only the tool-free test tier plus the two
+# smoke jobs, so a fresh checkout needs nothing beyond the committed repo:
+# the external feature-tool contracts are never resolved here, and the runner
+# downloads no tool archive. A job that reached for a missing contract would
+# turn red for an environment reason and look like a code defect -- which is
+# exactly why the tool-free tier is audited separately (Ruling 3).
+name: ci
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**/*.md"
+  pull_request:
+    paths-ignore:
+      - "**/*.md"
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Idempotent provisioning: locally the checkout already satisfies this, so
+      # the guarded branch keeps the runner's install out of the local run.
+      - name: Provision
+        run: |
+          python -c "import phasepred, pytest, ruff" \
+            || python -m pip install -e . -e packages/catgranule ruff mypy pytest
+      - name: Lint
+        run: ruff check .
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Provision
+        run: |
+          python -c "import phasepred, mypy" \
+            || python -m pip install -e . -e packages/catgranule ruff mypy pytest
+      - name: Type-check
+        run: mypy src
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Provision
+        run: |
+          python -c "import phasepred, pytest" \
+            || python -m pip install -e . -e packages/catgranule ruff mypy pytest
+      - name: Tool-free test tier
+        run: python -m pytest -m toolfree -q
+
+  train-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Provision
+        run: |
+          python -c "import phasepred, xgboost" \
+            || python -m pip install -e . -e packages/catgranule ruff mypy pytest
+      # The E2 output guard refuses a smoke run that names no explicit
+      # --output-dir/--metrics-dir, so the runner's scratch path is required.
+      - name: Smoke-train into a temporary directory
+        run: |
+          python scripts/train_phasepred.py --smoke 20 \
+            --output-dir "$RUNNER_TEMP/train/models" \
+            --metrics-dir "$RUNNER_TEMP/train/metrics"
+
+  validate-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Provision
+        run: |
+          python -c "import phasepred" \
+            || python -m pip install -e . -e packages/catgranule ruff mypy pytest
+      # Non-strict by design: the fixed-protocol boundary case is reported as a
+      # non-hard warning, so the job stays green. The report goes to scratch.
+      - name: Smoke-validate
+        run: |
+          python scripts/validate_phasepred.py \
+            --models-dir src/phasepred/data/models \
+            --output "$RUNNER_TEMP/validate/report.json"

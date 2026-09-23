@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+# PhosphoSitePlus data-contract runner.
+#
+#   ./run --check   verify the dataset is present; record sha256 + version marker
+#   ./run           print the resolved path and integrity metadata (no data is
+#                   interpreted: this contract only locates the file)
+#
+# PhosphoSitePlus is registration-gated (CC BY-NC-SA 3.0, no redistribution) and
+# this contract never downloads. Install it with install.sh, which writes into
+# the user data directory. `--check` only verifies existence and integrity
+# metadata; it does not parse the dataset.
+set -euo pipefail
+
+pkg_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd "$pkg_dir/../.." && pwd)"
+manifest="$pkg_dir/manifest.toml"
+data_name="Phosphorylation_site_dataset.gz"
+
+mode="info"
+case "${1:-}" in
+  --check) mode="check" ;;
+  "") ;;
+  -h|--help)
+    sed -n '2,9p' "$0" | sed 's/^# \{0,1\}//'
+    exit 0
+    ;;
+  *)
+    echo "Usage: $0 [--check]" >&2
+    exit 2
+    ;;
+esac
+
+manifest_get() {
+  sed -n "s/^$1 *= *\"\\(.*\\)\"$/\\1/p" "$manifest" | head -n1
+}
+
+user_root() {
+  if [[ -n "${PHASEPRED_DATA_ROOT:-}" ]]; then
+    printf '%s\n' "$PHASEPRED_DATA_ROOT"
+  elif [[ -n "${XDG_DATA_HOME:-}" ]]; then
+    printf '%s\n' "$XDG_DATA_HOME/phasepred"
+  elif [[ -n "${HOME:-}" ]]; then
+    printf '%s\n' "$HOME/.local/share/phasepred"
+  else
+    return 1
+  fi
+}
+
+resolve_file() {
+  local root cand
+  if [[ -n "${PHASEPRED_PHOSPHOSITEPLUS_DIR:-}" ]] \
+     && [[ -f "${PHASEPRED_PHOSPHOSITEPLUS_DIR}/$data_name" ]]; then
+    printf '%s\n' "${PHASEPRED_PHOSPHOSITEPLUS_DIR}/$data_name"
+    return 0
+  fi
+  root="$(user_root)" || return 1
+  for cand in \
+    "$root/phosphositeplus/$data_name" \
+    "$root/data/raw/external/phosphositeplus/$data_name" \
+    "$repo_root/data/raw/external/phosphositeplus/$data_name"; do
+    if [[ -f "$cand" ]]; then
+      printf '%s\n' "$cand"
+      return 0
+    fi
+  done
+  return 1
+}
+
+sha256_of() {
+  if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | awk '{print $1}'
+  else
+    shasum -a 256 "$1" | awk '{print $1}'
+  fi
+}
+
+path="$(resolve_file)" || {
+  echo "PhosphoSitePlus: MISSING ($data_name)" >&2
+  echo "  Install it with: bash $pkg_dir/install.sh" >&2
+  echo "  User data target: $(user_root)/phosphositeplus/" >&2
+  exit 1
+}
+
+actual="$(sha256_of "$path")"
+expected="$(manifest_get sha256)"
+policy="$(manifest_get sha256_policy)"
+declared_marker="$(manifest_get version_marker)"
+
+marker=""
+if command -v gzip >/dev/null 2>&1; then
+  marker="$(gzip -dc "$path" 2>/dev/null | head -n1 || true)"
+fi
+if [[ -z "$marker" ]]; then
+  marker="$declared_marker"
+fi
+
+echo "PhosphoSitePlus: ok ($path)"
+echo "  sha256:         $actual"
+echo "  sha256_policy:  $policy"
+echo "  version_marker: $marker"
+
+if [[ -n "$expected" && "$actual" != "$expected" ]]; then
+  echo "  WARNING: sha256 differs from the known-version marker $expected" >&2
+  echo "  WARNING: upstream PhosphoSitePlus has rolled; recording the actual digest." >&2
+fi
+
+exit 0

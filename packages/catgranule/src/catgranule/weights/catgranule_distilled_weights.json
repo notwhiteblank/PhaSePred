@@ -1,0 +1,220 @@
+{
+  "version": "1.0.0",
+  "mode": "distilled",
+  "model_file": "distilled_xgb_model.ubj",
+  "weights": {
+    "rc": 0.48,
+    "rn": 7.24,
+    "dc": 0.26,
+    "dn": 11.54,
+    "pfg": 1.42,
+    "prg": 1.98,
+    "length": 0.25
+  },
+  "scales": {
+    "A": {
+      "rc": 0.45,
+      "rn": 0.46,
+      "dc": 0.08,
+      "dn": 0.03,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "C": {
+      "rc": 0.0,
+      "rn": 0.0,
+      "dc": 0.24,
+      "dn": 0.01,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "D": {
+      "rc": 0.61,
+      "rn": 0.61,
+      "dc": 0.56,
+      "dn": 0.29,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "E": {
+      "rc": 0.44,
+      "rn": 0.7,
+      "dc": 0.0,
+      "dn": 0.09,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "F": {
+      "rc": 0.59,
+      "rn": 0.38,
+      "dc": 0.05,
+      "dn": 0.08,
+      "pfg": 1.0,
+      "prg": 0.0
+    },
+    "G": {
+      "rc": 0.92,
+      "rn": 0.52,
+      "dc": 0.63,
+      "dn": 1.0,
+      "pfg": 1.0,
+      "prg": 1.0
+    },
+    "H": {
+      "rc": 0.51,
+      "rn": 0.38,
+      "dc": 0.4,
+      "dn": 0.19,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "I": {
+      "rc": 0.46,
+      "rn": 0.37,
+      "dc": 0.17,
+      "dn": 0.09,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "K": {
+      "rc": 0.59,
+      "rn": 1.0,
+      "dc": 0.18,
+      "dn": 0.22,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "L": {
+      "rc": 0.3,
+      "rn": 0.37,
+      "dc": 0.06,
+      "dn": 0.05,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "M": {
+      "rc": 0.24,
+      "rn": 0.05,
+      "dc": 0.06,
+      "dn": 0.11,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "N": {
+      "rc": 0.67,
+      "rn": 0.4,
+      "dc": 0.53,
+      "dn": 0.67,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "P": {
+      "rc": 0.69,
+      "rn": 0.4,
+      "dc": 1.0,
+      "dn": 0.09,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "Q": {
+      "rc": 0.56,
+      "rn": 0.51,
+      "dc": 0.24,
+      "dn": 0.21,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "R": {
+      "rc": 0.89,
+      "rn": 0.72,
+      "dc": 0.17,
+      "dn": 0.05,
+      "pfg": 0.0,
+      "prg": 1.0
+    },
+    "S": {
+      "rc": 0.7,
+      "rn": 0.44,
+      "dc": 0.47,
+      "dn": 0.24,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "T": {
+      "rc": 0.44,
+      "rn": 0.45,
+      "dc": 0.5,
+      "dn": 0.0,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "V": {
+      "rc": 0.44,
+      "rn": 0.39,
+      "dc": 0.01,
+      "dn": 0.14,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "W": {
+      "rc": 0.46,
+      "rn": 0.21,
+      "dc": 0.23,
+      "dn": 0.09,
+      "pfg": 0.0,
+      "prg": 0.0
+    },
+    "Y": {
+      "rc": 1.0,
+      "rn": 0.54,
+      "dc": 0.45,
+      "dn": 0.17,
+      "pfg": 0.0,
+      "prg": 0.0
+    }
+  },
+  "normalization": {
+    "mean": 7.984683786232663,
+    "std": 0.5177112878123772,
+    "n_proteins": 5727
+  },
+  "window_radius": 3,
+  "residue_window_size": 51,
+  "feature_spec": {
+    "dim": 181,
+    "map": "window summaries radii 3/7/13/25 (mean/p25/p50/p75/std per 6 scales=120); g-profile stats half-windows 3/12/25 (11 stats + frac_pos + mean_pos = 39); AA composition (20); L/logL (2)",
+    "filters": "sequence length >= 60, standard residues only",
+    "coefficient_basis": "Bolognesi 2016 published coefficients + mmc1 Table S4 scales (identical copy of the legacy/paper formula artifacts)"
+  },
+  "trained_on": {
+    "dataset": "PhaSePred web-archive human eval-pool (2022-02-11 snapshot)",
+    "n_train": 16164,
+    "human_reviewed.zip_sha256": "4ee6d4231b6f9fb182bea9d222e5dbbb82bfa0e54d95bc33e412dc7af5cad3ff",
+    "compact_source": "human_compact.jsonl <- human_reviewed.json (data/raw/external/phasepred_web, gitignored)",
+    "two_layer_protocol": "config selected on eval-internal split (train 13000/select 3164, seed 123); holdout scored once",
+    "locked_config": {
+      "n_estimators": 600,
+      "max_depth": 7,
+      "learning_rate": 0.04,
+      "subsample": 0.85,
+      "colsample_bytree": 0.8,
+      "min_child_weight": 3,
+      "reg_lambda": 5.0,
+      "random_state": 0
+    }
+  },
+  "provenance": {
+    "route": "distilled",
+    "source": "XGBoost surrogate fitted to PhaSePred web-archive catGRANULE single (2022-02-11 snapshot, 16,164 human eval-pool proteins; 181-dim feature map; locked hyperparameters per work-log/S4.md breakpoint guide)",
+    "date": "2026-09-07",
+    "gate": {
+      "protocol": "web-archive human holdout (seed 42) single Spearman rho / median |delta|",
+      "rho": 0.998961,
+      "delta_median": 0.017653,
+      "n_holdout": 4042,
+      "gate_pass": false,
+      "decision": "accepted with gap by user (D21, 2026-09-07); original gate delta<=0.01 superseded",
+      "decision_ref": "docs/migration/PLAN.md D21"
+    }
+  }
+}

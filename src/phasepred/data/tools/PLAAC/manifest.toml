@@ -1,0 +1,18 @@
+# PLAAC tool-package manifest (PhaSePred S3 tool contract).
+
+name = "plaac"
+kind = "java"
+entry = "./run"
+license = "MIT"
+redistributable = true
+
+[runtime]
+java = ">=11"
+
+[output]
+format = "tsv"
+description = "Tab-separated table on stdout with header row beginning 'SEQid'; per-accession rows carry the NLLR column (normalized log-likelihood ratio) used by PhaSePred."
+
+[install]
+command = "bash tools/PLAAC/install.sh"
+hint = "PLAAC jar is vendored prebuilt (MIT). Verify with: bash tools/PLAAC/install.sh --check (needs Java >= 11)."

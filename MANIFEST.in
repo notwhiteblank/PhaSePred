@@ -1,0 +1,33 @@
+# Source-distribution contents (E8 finding 4, D43).
+#
+# The wheel ships only the importable package and its package-data; the sdist
+# is the larger source archive and carries what a user needs to reproduce the
+# documented environments, beyond the src/ tree setuptools includes already.
+#
+# Included on purpose:
+#   - environment.yml: the documented conda route (D25/E9 deliverable 3). Its
+#     pip section installs `-e .` and `-e packages/catgranule`, which is why
+#     the catgranule sub-project source is included too.
+#   - scripts/: one-click training (train_phasepred.py), validation
+#     (validate_phasepred.py) and their helpers.
+#   - packages/catgranule/: the root pyproject's uv workspace dependency and the
+#     environment.yml editable target, so the extracted sdist is self-consistent
+#     for `uv sync` / `conda env create`.
+#
+# Deliberately NOT included (this is a source distribution, not a repository
+# mirror): data/processed/ (training data stays repository-level; D26 and E9
+# deliverable 3 keep it out of the wheel too), the full tools/ contracts, docs/,
+# pixi.toml/pixi.lock, and the CI workflow. pip installs the package from the
+# index; the repository remains the route for training on the paper data.
+include environment.yml
+include NOTICE
+recursive-include scripts *.py *.sh *.md
+
+include packages/catgranule/pyproject.toml
+include packages/catgranule/README.md
+include packages/catgranule/CHANGELOG.md
+recursive-include packages/catgranule/src *.py *.json *.ubj
+recursive-include packages/catgranule/tests *.py *.fasta
+recursive-include packages/catgranule/scripts *.py
+
+global-exclude *.py[cod]

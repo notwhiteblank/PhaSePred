@@ -1,0 +1,48 @@
+# PhosphoSitePlus data contract (PhaSePred E4, D28).
+#
+# Schema: name/kind/entry/license/redistributable/runtime/path_executables/
+# data/output/install. See docs/FEATURES.md 附注 A and docs/TOOL_LICENSES.md §12.
+#
+# `kind = "data"` marks a pinned, non-runnable data download (Ruling 11):
+# `_parse_manifest` accepts it and `load_manifests` validates then excludes it,
+# because the feature-column registry reports this component through the
+# synthetic `_phosphosite_status()` row (the registry stays 9 rows).
+
+name = "phosphositeplus"
+kind = "data"
+entry = "Phosphorylation_site_dataset.gz"
+license = "CC-BY-NC-SA-3.0"
+redistributable = false
+
+# Pinned download + integrity metadata (Ruling 3). PhosphoSitePlus is a rolling
+# database that is revised upstream without a version bump, so its sha256 is a
+# *known-version marker*: a mismatch is recorded as a warning and installation
+# still succeeds. Contrast tools/PScore/manifest.toml, whose 2019 static archive
+# uses `sha256_policy = "hard"`. Measured 2026-09-17 on the local copy.
+download_url = "https://www.phosphosite.org/downloads/Phosphorylation_site_dataset.gz"
+sha256 = "5e339a7f83b9921c665f5881b44e245eaabfe28d5a2a106c98900e5f3fc5b095"
+sha256_policy = "known-version"
+# First line of the gunzipped dataset; also written into the install record.
+version_marker = "042026"
+
+[[data]]
+path = "phosphositeplus/Phosphorylation_site_dataset.gz"
+note = """
+Registration-gated CC BY-NC-SA 3.0 dataset; never redistributed. install.sh
+fetches it into the user data directory (override with PHASEPRED_DATA_ROOT)."""
+
+[output]
+format = "gzip"
+description = """
+Gzipped TSV; line 1 is the version marker, line 2 the license/attribution
+notice, then ACC_ID / ORGANISM / MOD_RSD records. PhaSePred parses it through
+tools.phosphosite_path()."""
+
+[install]
+command = "bash tools/PhosphoSitePlus/install.sh"
+hint = """
+PhosphoSitePlus is registration-gated and not redistributable. install.sh
+downloads it into the user data directory (default
+$XDG_DATA_HOME/phasepred/phosphositeplus/, or
+$PHASEPRED_DATA_ROOT/phosphositeplus/); set PHASEPRED_VENDOR_ARCHIVE_DIR for a
+pre-fetched copy or --offline to skip the network."""

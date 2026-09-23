@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+# ESpritz contract runner.
+#
+#   ./run --check                 verify perl + extracted tree (exit 0/1)
+#   ./run <in_fasta_dir> <MODEL> <SW>   run espritz.pl (paper: D 0)
+#
+# Standard output: ESpritz license banner + per-input *.espritz sibling files
+# with two-column residue lines "<state> <score>" (D/O). PhaSePred computes
+# the IDR fraction as count(D) / L over the two-column lines only.
+set -euo pipefail
+
+pkg_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+tool_dir="$pkg_dir/espritz"
+entrypoint="$tool_dir/espritz.pl"
+
+if [[ "${1:-}" == "--check" ]]; then
+  if [[ ! -f "$entrypoint" ]]; then
+    echo "ESpritz script missing ($entrypoint). Extract espritz.zip: bash $pkg_dir/install.sh" >&2
+    exit 1
+  fi
+  if ! command -v perl >/dev/null 2>&1; then
+    echo "perl not found on PATH (ESpritz needs Perl >= 5)" >&2
+    exit 1
+  fi
+  exit 0
+fi
+
+if [[ $# -ne 3 ]]; then
+  cat >&2 <<EOF
+Usage: $0 <WORKDIR> <MODEL> <SW>
+
+  WORKDIR  Directory containing one or more .fasta files.
+  MODEL    X, D, N for sequence-only models; pX, pD, pN require PSI-BLAST.
+  SW       1 for best-Sw threshold, 0 for 5% false-positive-rate threshold.
+
+Predict uses MODEL=D SW=0 (DisProt, 5% FPR — paper protocol).
+EOF
+  exit 2
+fi
+
+workdir="$1"
+model="$2"
+sw="$3"
+
+if [[ ! -f "$entrypoint" ]]; then
+  cat >&2 <<EOF
+ESpritz entrypoint not found: $entrypoint
+
+Expected local install (academic license, no redistribution):
+  bash $pkg_dir/install.sh
+EOF
+  exit 1
+fi
+
+case "$model" in
+  X|D|N) ;;
+  pX|pD|pN)
+    cat >&2 <<EOF
+ESpritz PSI-BLAST models require additional BLAST binaries, databases, and
+$tool_dir/align/getAlignments.pl path configuration.
+Use X, D, or N until that external database layer is prepared.
+EOF
+    exit 2
+    ;;
+  *)
+    echo "Unknown ESpritz model: $model" >&2
+    exit 2
+    ;;
+esac
+
+case "$sw" in
+  0|1) ;;
+  *)
+    echo "SW must be 0 or 1, got: $sw" >&2
+    exit 2
+    ;;
+esac
+
+if [[ ! -d "$workdir" ]]; then
+  echo "ESpritz input directory not found: $workdir" >&2
+  exit 1
+fi
+
+workdir_abs="$(cd "$workdir" && pwd)"
+
+(
+  cd "$tool_dir"
+  exec perl "$entrypoint" "$workdir_abs" "$model" "$sw"
+)

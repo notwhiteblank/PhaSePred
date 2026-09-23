@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# PLAAC contract runner.
+#
+#   ./run --check                 verify jar + Java runtime (exit 0/1)
+#   ./run [plaac args...]         run java -jar plaac.jar (e.g. -i in.fasta)
+#
+# Standard output: PLAAC parameter block + tab-separated table whose header
+# row begins with 'SEQid'; the NLLR column is the PhaSePred feature.
+set -euo pipefail
+
+pkg_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+jar="$pkg_dir/plaac-master/web/bin/plaac.jar"
+
+if [[ "${1:-}" == "--check" ]]; then
+  if [[ ! -f "$jar" ]]; then
+    echo "PLAAC jar not found at $jar" >&2
+    exit 1
+  fi
+  if ! command -v java >/dev/null 2>&1; then
+    echo "java runtime not found on PATH (PLAAC needs Java >= 11)" >&2
+    exit 1
+  fi
+  exit 0
+fi
+
+if [[ ! -f "$jar" ]]; then
+  cat >&2 <<EOF
+PLAAC jar missing (expected: $jar)
+
+Re-extract the vendored tree (bash tools/PLAAC/install.sh) or point
+PHASEPRED_PLAAC_DIR at a tools/PLAAC/ clone.
+EOF
+  exit 1
+fi
+
+if ! command -v java >/dev/null 2>&1; then
+  echo "java runtime not found on PATH (PLAAC needs Java >= 11). Install a JRE and retry." >&2
+  exit 1
+fi
+
+exec java -jar "$jar" "$@"

@@ -1,0 +1,23 @@
+# SEG tool-package manifest (PhaSePred S3 tool contract).
+# Schema: name/kind/entry/license/redistributable/runtime/path_executables/
+#         data/output/install. See docs/FEATURES.md 附注 A and
+#         docs/TOOL_LICENSES.md §12 for the field definitions.
+
+name = "seg"
+kind = "binary"
+entry = "./run"
+license = "ncbi-public-domain-convention"
+redistributable = true
+
+[runtime]
+make = "*"
+
+path_executables = ["seg"]
+
+[output]
+format = "text"
+description = "SEG-masked FASTA on stdout (headers preserved; masked residues lowercase / 'x' with -x). Paper args: 12 2.2 2.5 -x."
+
+[install]
+command = "bash tools/SEG/install.sh"
+hint = "Build the vendored NCBI SEG binary: bash tools/SEG/install.sh (set PHASEPRED_SEG_DIR to override)."
