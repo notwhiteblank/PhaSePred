@@ -40,16 +40,24 @@ The ten features, of which the 8-feature modes use all but the last two:
 
 ### Install
 
-The package needs Python `>=3.12`. Pick one of four routes:
+Python `>=3.12`. Clone the repository and install:
 
 ```bash
-pixi install                                                        # pixi
-uv venv --python 3.12 && uv pip install .                           # uv
-conda env create -f environment.yml && conda activate phasepred     # conda
-python -m venv .venv && .venv/bin/pip install -e . -e packages/catgranule   # plain venv
+git clone https://github.com/notwhiteblank/PhaSePred.git && cd PhaSePred
+pixi install
 ```
 
-Install the external tools separately:
+`uv`, `conda` and a plain venv work just as well:
+
+```bash
+uv venv --python 3.12 && uv pip install .
+conda env create -f environment.yml && conda activate phasepred
+python -m venv .venv && .venv/bin/pip install -e . -e packages/catgranule
+```
+
+Then install the external feature tools. Each installer is idempotent and puts
+its data under `~/.local/share/phasepred/`, where the package finds it
+automatically:
 
 ```bash
 bash tools/SEG/install.sh
@@ -61,14 +69,21 @@ bash tools/LocalCIDER/install.sh
 bash tools/PhosphoSitePlus/install.sh   # only needed for hSaPS / hPdPS
 ```
 
-Then check:
+`check-tools` confirms the result; a complete install reports `9 OK`:
 
 ```bash
-phasepred check-tools          # table, with an install hint on every MISSING row
+phasepred check-tools          # status table, with an install hint per missing component
 phasepred check-tools --strict # exits 1 when a required tool is missing; use this in scripts and CI
 ```
 
-`SEG`, `PLAAC`, `LocalCIDER`, `catGRANULE` and `DeepPhase` ship with the package and work immediately. `PScore`, `ESpritz`, `DeepCoil` and `PhosphoSitePlus` need the installers above.
+The models and the DeepPhase table ship inside the package, so nothing else is
+needed to predict. `SEG`, `PLAAC`, `LocalCIDER` and `catGRANULE` also ship with
+it; the installers above cover the four components that cannot be redistributed.
+
+Installing from PyPI instead (`pip install phasepred`) gives you the same
+package. The tool installers live in `tools/`, which is part of the repository
+rather than the wheel, so clone it to run them — after that everything resolves
+the same way.
 
 ### Run
 

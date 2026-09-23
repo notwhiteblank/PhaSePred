@@ -9,7 +9,24 @@ Implementation of [Chen et al. 2022 *PNAS*](https://doi.org/10.1073/pnas.2115369
 pip install phasepred
 ```
 
-Requires Python >= 3.12.
+Requires Python >= 3.12. The models and the DeepPhase table ship inside the
+package.
+
+Four feature components cannot be redistributed and need a one-time install from
+the repository:
+
+```bash
+git clone https://github.com/notwhiteblank/PhaSePred.git && cd PhaSePred
+bash tools/PScore/install.sh
+bash tools/ESpritz/install.sh
+bash tools/DeepCoil/install.sh
+bash tools/PhosphoSitePlus/install.sh   # only needed for hSaPS / hPdPS
+```
+
+The installers put their data under `~/.local/share/phasepred/`, where the
+package finds it automatically. `phasepred check-tools` prints a status row per
+component, and for every missing one the exact command that installs it. A
+complete install reports `9 OK`.
 
 ## Use
 
@@ -25,18 +42,6 @@ Input can also be UniProt accessions:
 ```bash
 phasepred predict --ids "P35637,Q9Y2W1" --mode SaPS --output scores.csv
 ```
-
-## Feature tools
-
-Five of the nine feature components ship with the package and work immediately.
-The rest need a one-time install:
-
-```bash
-phasepred check-tools
-```
-
-This prints a status row per component, and for every missing one the exact
-command that installs it.
 
 ## More
 

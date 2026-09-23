@@ -40,16 +40,22 @@
 
 ### 安装
 
-Python 包要求 `>=3.12`，四条路线任选其一：
+要求 Python `>=3.12`。克隆仓库并安装：
 
 ```bash
-pixi install                                                        # pixi
-uv venv --python 3.12 && uv pip install .                           # uv
-conda env create -f environment.yml && conda activate phasepred     # conda
-python -m venv .venv && .venv/bin/pip install -e . -e packages/catgranule   # 原生 venv
+git clone https://github.com/notwhiteblank/PhaSePred.git && cd PhaSePred
+pixi install
 ```
 
-外部特征工具各自安装：
+`uv`、`conda`、原生 venv 同样可用：
+
+```bash
+uv venv --python 3.12 && uv pip install .
+conda env create -f environment.yml && conda activate phasepred
+python -m venv .venv && .venv/bin/pip install -e . -e packages/catgranule
+```
+
+然后安装外部特征工具。安装器都是幂等的，数据落在 `~/.local/share/phasepred/`，包会自动在那里找到：
 
 ```bash
 bash tools/SEG/install.sh
@@ -61,14 +67,16 @@ bash tools/LocalCIDER/install.sh
 bash tools/PhosphoSitePlus/install.sh   # 仅 hSaPS / hPdPS 需要
 ```
 
-然后校验：
+`check-tools` 用来确认结果，装全了会报 `9 OK`：
 
 ```bash
-phasepred check-tools          # 表格，每个 MISSING 行给出安装提示
+phasepred check-tools          # 状态表，每个缺失组件给出安装命令
 phasepred check-tools --strict # 有必需工具缺失时退出 1，脚本和 CI 用这个
 ```
 
-`SEG`、`PLAAC`、`LocalCIDER`、`catGRANULE`、`DeepPhase` 随包分发，装完即可用。`PScore`、`ESpritz`、`DeepCoil`、`PhosphoSitePlus` 需要跑上面的安装器。
+模型与 DeepPhase 查表都随包分发，预测不需要再准备别的东西。`SEG`、`PLAAC`、`LocalCIDER`、`catGRANULE` 也随包分发；上面的安装器覆盖的是四个不可再分发的组件。
+
+改用 PyPI 安装（`pip install phasepred`）得到的是同一个包。工具安装器在仓库的 `tools/` 下、不在 wheel 里，所以克隆仓库来运行它们——之后解析方式完全一样。
 
 ### 运行
 
