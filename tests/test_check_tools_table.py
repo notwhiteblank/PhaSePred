@@ -22,7 +22,10 @@ from phasepred.tool_paths import ToolStatus, format_status_table
 
 pytestmark = pytest.mark.toolfree
 
-TOOLS_HINT = "Data (DBS) is gitignored: bash tools/PScore/install.sh --check verifies script + DBS."
+TOOLS_HINT = (
+    "PScore is unavailable. Install its code and DBS with: bash tools/PScore/install.sh "
+    "(then verify: bash tools/PScore/install.sh --check)."
+)
 PACKAGE_HINT = "Bundled with the phasepred wheel (deepphase_scores.tsv)."
 
 
@@ -57,6 +60,7 @@ def test_table_prints_install_hint_for_missing_rows_only() -> None:
 
     assert "Install hints:" in table
     assert "PScore: " + TOOLS_HINT in table
+    assert "bash tools/PScore/install.sh" in table
     # Reverse proof: an OK row's hint is not a remedy and must not be printed;
     # if the renderer dumped every hint (or the whole ToolStatus repr) this fails.
     assert "Build the vendored SEG binary." not in table

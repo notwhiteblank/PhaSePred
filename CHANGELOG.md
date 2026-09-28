@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.2] - 2026-09-28
+
+Patch release for the 1.0.1 installation feedback. Model artifacts and
+training data are unchanged.
+
+### Fixed
+
+- Use `python3` in the Ubuntu venv examples.
+- Document DeepCoil's user-data installation path and show it in missing-tool
+  guidance; keep the legacy checkout environment as a fallback.
+- Show the PScore install command when `check-tools` reports it missing.
+- Let the checkout PScore runner find DBS in the installed user-data copy and
+  accept relative FASTA and output paths when invoked on its own.
+
 ## [1.0.1] - 2026-09-28
 
 Patch release based on installation and prediction feedback. Model artifacts

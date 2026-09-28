@@ -21,9 +21,11 @@ from __future__ import annotations
 
 import hashlib
 import importlib
+import json
 import os
 import shutil
 import subprocess
+import sys
 import tomllib
 from pathlib import Path
 
@@ -184,3 +186,50 @@ def test_pscore_install_check_uses_installed_data_root(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stdout + result.stderr
     assert f"PScore: ok ({target})" in result.stdout
     assert "DBS data missing" not in result.stderr
+
+
+def test_checkout_pscore_run_uses_installed_dbs_and_caller_paths(tmp_path: Path) -> None:
+    pkg = tmp_path / "PScore"
+    pkg.mkdir()
+    shutil.copy2(TOOLS_ROOT / "PScore" / "run", pkg / "run")
+
+    root = tmp_path / "user-data"
+    source = root / "pscore" / "SourceCodeS2"
+    (source / "DBS").mkdir(parents=True)
+    (source / "elife_phase_separation_predictor.py").write_text(
+        "import json, os, sys\n"
+        "print(json.dumps({'cwd': os.getcwd(), 'args': sys.argv[1:], "
+        "'dbs': os.path.isdir('DBS')}))\n",
+        encoding="utf-8",
+    )
+    input_file = tmp_path / "input.fasta"
+    input_file.write_text(">test\nACDEFGHIKLMNPQRSTVWY\n", encoding="utf-8")
+
+    env = os.environ.copy()
+    env["PHASEPRED_DATA_ROOT"] = str(root)
+    env["PHASEPRED_PYTHON"] = sys.executable
+    check = subprocess.run(
+        [str(pkg / "run"), "--check"],
+        cwd=tmp_path, capture_output=True, text=True, timeout=60, env=env,
+    )
+    assert check.returncode == 0, check.stderr
+
+    result = subprocess.run(
+        [str(pkg / "run"), "input.fasta", "-output", "output.tsv", "-mute"],
+        cwd=tmp_path, capture_output=True, text=True, timeout=60, env=env,
+    )
+    assert result.returncode == 0, result.stderr
+    data = json.loads(result.stdout)
+    assert data == {
+        "cwd": str(source),
+        "args": [str(input_file), "-output", str(tmp_path / "output.tsv"), "-mute"],
+        "dbs": True,
+    }
+
+    env["PHASEPRED_DATA_ROOT"] = "user-data"
+    relative_root = subprocess.run(
+        [str(pkg / "run"), "input.fasta"],
+        cwd=tmp_path, capture_output=True, text=True, timeout=60, env=env,
+    )
+    assert relative_root.returncode == 0, relative_root.stderr
+    assert json.loads(relative_root.stdout)["args"] == [str(input_file)]

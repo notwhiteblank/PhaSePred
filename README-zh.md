@@ -52,7 +52,7 @@ pixi install
 ```bash
 uv venv --python 3.12 && uv pip install .
 conda env create -f environment.yml && conda activate phasepred
-python -m venv .venv && .venv/bin/pip install -e . -e packages/catgranule
+python3 -m venv .venv && .venv/bin/pip install -e . -e packages/catgranule
 ```
 
 然后安装外部特征工具。安装器都是幂等的，数据落在 `~/.local/share/phasepred/`，包会自动在那里找到：

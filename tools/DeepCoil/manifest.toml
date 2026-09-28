@@ -15,4 +15,4 @@ description = "Writes per-accession '<safe_id>.out' tab-separated files (aa, cc,
 
 [install]
 command = "bash tools/DeepCoil/install.sh"
-hint = "DeepCoil has no upstream license (not redistributable). Build the isolated Python 3.8 conda env with deepcoil==2.0.2: bash tools/DeepCoil/install.sh (env at .external_envs/deepcoil; override with DEEPCOIL_ENV_PREFIX)."
+hint = "DeepCoil has no upstream license (not redistributable). Install the isolated Python 3.8 env with deepcoil==2.0.2: bash tools/DeepCoil/install.sh (default: ~/.local/share/phasepred/envs/deepcoil; override with DEEPCOIL_ENV_PREFIX)."

@@ -52,7 +52,7 @@ pixi install
 ```bash
 uv venv --python 3.12 && uv pip install .
 conda env create -f environment.yml && conda activate phasepred
-python -m venv .venv && .venv/bin/pip install -e . -e packages/catgranule
+python3 -m venv .venv && .venv/bin/pip install -e . -e packages/catgranule
 ```
 
 Then install the external feature tools. Each installer is idempotent and puts

@@ -43,8 +43,9 @@ bash tools/PScore/install.sh --check  # verify predictor + DBS present
 
 ## Usage
 
-Run from anywhere; the wrapper `cd`s into `SourceCodeS2/` because the
-predictor reads `DBS/` relative to its own location:
+Run from anywhere with relative or absolute FASTA and output paths. The wrapper
+uses the installed user-data `SourceCodeS2/DBS/` when the checkout has no DBS,
+then changes into `SourceCodeS2/` as required by the predictor:
 
 ```bash
 tools/PScore/run input.fasta -output pscore.tsv -overwrite -mute

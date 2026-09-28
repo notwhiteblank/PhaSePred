@@ -1,6 +1,6 @@
 [project]
 name = "phasepred"
-version = "1.0.1"
+version = "1.0.2"
 description = "Paper-faithful re-implementation of the PhaSePred phase-separation predictor (Chen et al. 2022, PNAS)."
 readme = { file = "README-pypi.md", content-type = "text/markdown" }
 license = "MIT"

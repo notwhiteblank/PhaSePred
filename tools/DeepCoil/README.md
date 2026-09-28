@@ -27,8 +27,10 @@ tools/DeepCoil/
 └── README.md      this file
 ```
 
-No entity is vendored — the tool lives in an isolated Python 3.8 conda env
-at `.external_envs/deepcoil` (gitignored).
+No entity is vendored — the tool lives in an isolated Python 3.8 conda env.
+New installations use `~/.local/share/phasepred/envs/deepcoil` by default,
+or `$XDG_DATA_HOME/phasepred/envs/deepcoil` / `$PHASEPRED_DATA_ROOT/envs/deepcoil`
+when set. Existing `.external_envs/deepcoil` environments remain supported.
 
 ## Install
 
@@ -38,14 +40,12 @@ bash tools/DeepCoil/install.sh --check  # verify env/bin/deepcoil present
 ```
 
 Overrides: `DEEPCOIL_ENV_PREFIX=/path/to/env DEEPCOIL_PYTHON_VERSION=3.8
-DEEPCOIL_VERSION=2.0.2`. The env prefix declared in
-`manifest.toml` `[runtime]` is `.external_envs/deepcoil`; the manifest
-`env_prefix` and the wrapper's `DEEPCOIL_ENV_PREFIX` override agree.
+DEEPCOIL_VERSION=2.0.2`. The `manifest.toml` `[runtime]` prefix names the
+legacy checkout fallback; the installer and runner prefer the user data root.
 
 ## Usage
 
 ```bash
-DEEPCOIL_ENV_PREFIX="$PWD/.external_envs/deepcoil" \
 tools/DeepCoil/run -i in.fasta -out_path /tmp/dc_out -n_cpu 4
 tools/DeepCoil/run --check
 ```

@@ -28,4 +28,4 @@ description = "One 'PScore:  <value>  >ACC' line per scored accession (via stdou
 
 [install]
 command = "bash tools/PScore/install.sh"
-hint = "PScore code is vendored (CC-BY 4.0, eLife 31486). Data (DBS) is gitignored: bash tools/PScore/install.sh --check verifies script + DBS."
+hint = "PScore is unavailable. Install its code and DBS with: bash tools/PScore/install.sh (then verify: bash tools/PScore/install.sh --check)."
