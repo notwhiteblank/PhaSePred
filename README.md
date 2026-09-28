@@ -108,7 +108,25 @@ phasepred predict --fasta my.fasta --ids "P35637" --mode SaPS --output scores.cs
 phasepred features-from-fasta --input my.fasta --output features.csv
 ```
 
-The output CSV carries the numeric value of every feature alongside `score`.
+The `predict` output CSV carries every model feature alongside `score`. If a
+feature is unavailable for a protein, `predict` lists the missing columns on
+stderr and the model imputes them before scoring. A score with missing features
+should be interpreted with that limitation. For example, selenocysteine (`U`)
+has no value in the local catGRANULE scale, so that feature stays empty; FCR
+is still computed from the charged residues in the original sequence.
+
+`features-from-fasta` is a smaller four-feature command: Hydropathy, FCR,
+ESpritz IDR fraction, and SEG LCR fraction. Use `predict` when the complete
+model feature table is needed.
+
+DeepCoil predictions are sent in bounded groups (at most four proteins and
+normally 4,000 residues per call; a single longer protein stays intact) to
+reduce peak memory use. A failed group emits a
+warning and its DeepCoil values are imputed. If the operating system still
+kills a group for memory, split the FASTA into smaller files or increase the
+available memory. Sequences shorter than 20 residues are skipped with a
+specific warning. `phasepred check-tools` is the consolidated status display;
+individual `run --check` commands may be silent when they succeed.
 
 ## Reproduction
 

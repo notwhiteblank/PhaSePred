@@ -101,7 +101,11 @@ phasepred predict --fasta my.fasta --ids "P35637" --mode SaPS --output scores.cs
 phasepred features-from-fasta --input my.fasta --output features.csv
 ```
 
-输出 CSV 除 `score` 外还包含全部特征列的数值。
+`predict` 的输出 CSV 除 `score` 外还包含模型使用的全部特征列。某条蛋白有缺失特征时，命令会在标准错误输出中列出缺失列，模型随后用训练时的填补规则给出分数；解读该分数时应考虑这一限制。例如硒代半胱氨酸（`U`）没有本地 catGRANULE 量表值，因此该特征仍为空；FCR 则按原始序列中的带电残基正常计算。
+
+`features-from-fasta` 是只计算四项特征的轻量命令：Hydropathy、FCR、ESpritz IDR 比例和 SEG LCR 比例。需要完整的模型特征表时使用 `predict`。
+
+为降低峰值内存，PhaSePred 每次最多向 DeepCoil 发送 4 条、通常合计不超过 4,000 个残基；单条超过 4,000 个残基的序列仍保持完整。某组失败时会显示警告，并填补该组缺失的 DeepCoil 值。如果操作系统仍因内存不足杀掉进程，可把 FASTA 拆成更小文件，或增加可用内存。短于 20 个残基的序列会被跳过并显示具体提示。安装状态以 `phasepred check-tools` 的汇总表为准；各工具的 `run --check` 成功时可能不输出文字。
 
 ## 复现
 

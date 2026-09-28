@@ -85,7 +85,7 @@ policy="$(manifest_get sha256_policy)"
 if [[ "$mode" == "check" ]]; then
   if available_in "$target"; then
     echo "PScore: ok ($target)"
-    exec "$pkg_dir/run" --check
+    exec "$target/run" --check
   fi
   if available_in "$pkg_dir"; then
     echo "PScore: ok ($pkg_dir, vendored checkout)"

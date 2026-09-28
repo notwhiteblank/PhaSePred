@@ -58,6 +58,14 @@ class FeatureSchemaError(ValueError):
     """Raised when feature inputs do not satisfy a model schema."""
 
 
+def compute_fcr(sequence: str) -> float:
+    """Charged-residue fraction; defined even when another scale lacks a residue."""
+    normalized = sequence.upper()
+    if not normalized:
+        raise FeatureSchemaError("Cannot compute features for an empty sequence")
+    return sum(residue in CHARGED_RESIDUES for residue in normalized) / len(normalized)
+
+
 def compute_native_features(sequence: str) -> dict[str, float]:
     normalized = sequence.upper()
     if not normalized:
@@ -69,7 +77,7 @@ def compute_native_features(sequence: str) -> dict[str, float]:
     return {
         "length": float(length),
         "Hydropathy": SequenceParameters(normalized).get_uversky_hydropathy(),
-        "FCR": sum(1 for residue in normalized if residue in CHARGED_RESIDUES) / length,
+        "FCR": compute_fcr(normalized),
     }
 
 

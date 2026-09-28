@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from pathlib import Path
 
 import pandas as pd
 import pytest
@@ -10,6 +11,7 @@ from phasepred.features import (
     HUMAN_FEATURE_COLUMNS,
     FeatureSchemaError,
     build_feature_matrix,
+    compute_fcr,
     compute_native_features,
 )
 
@@ -22,6 +24,32 @@ def test_compute_native_features_returns_length_hydropathy_and_fcr() -> None:
     assert features["length"] == 4
     assert features["FCR"] == 0.5
     assert math.isclose(features["Hydropathy"], 0.425, rel_tol=1e-9)
+
+
+def test_fcr_is_defined_for_selenocysteine() -> None:
+    assert compute_fcr("KUDER") == 0.8
+    q8 = Path(__file__).parent / "fixtures" / "sequences" / "Q8WWX9.fasta"
+    sequence = "".join(q8.read_text().splitlines()[1:])
+    assert compute_fcr(sequence) == pytest.approx(0.23448275862068965)
+    with pytest.raises(FeatureSchemaError, match="Unsupported residues"):
+        compute_native_features("KUDER")
+
+
+def test_predictor_keeps_fcr_when_hydropathy_is_unsupported(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from phasepred import tools
+    from phasepred.predictor import compute_all_features
+
+    for name in ("run_espritz", "run_seg", "run_pscore", "run_plaac", "run_deepcoil"):
+        monkeypatch.setattr(tools, name, lambda records: {})
+    row = compute_all_features(
+        [{"accession": "SEL", "sequence": "KUDER"}], verbose=False
+    ).iloc[0]
+    assert row["length"] == 5
+    assert row["FCR"] == 0.8
+    assert pd.isna(row["Hydropathy"])
+    assert pd.isna(row["catGRANULE"])
 
 
 def test_build_feature_matrix_joins_required_columns() -> None:

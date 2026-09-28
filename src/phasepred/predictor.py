@@ -33,7 +33,7 @@ def compute_all_features(
     from catgranule import CatGranuleInputError, score_sequence
 
     from phasepred import tools
-    from phasepred.features import compute_native_features as _native
+    from phasepred.features import compute_fcr, compute_native_features as _native
 
     t_start = time.time()
 
@@ -55,9 +55,9 @@ def compute_all_features(
             native_rows.append(
                 {
                     "UniprotEntry": r["accession"],
-                    "length": float("nan"),
+                    "length": float(len(seq)),
                     "Hydropathy": float("nan"),
-                    "FCR": float("nan"),
+                    "FCR": compute_fcr(seq) if seq else float("nan"),
                 }
             )
 

@@ -21,6 +21,9 @@ from __future__ import annotations
 
 import hashlib
 import importlib
+import os
+import shutil
+import subprocess
 import tomllib
 from pathlib import Path
 
@@ -156,3 +159,28 @@ def test_drift_guard_stays_in_the_toolfree_tier() -> None:
     names = {mark.name for mark in marks}
     assert "toolfree" in names, names
     assert "tools" not in names, names
+
+
+def test_pscore_install_check_uses_installed_data_root(tmp_path: Path) -> None:
+    pkg = tmp_path / "PScore"
+    pkg.mkdir()
+    for filename in ("install.sh", "run", "manifest.toml"):
+        shutil.copy2(TOOLS_ROOT / "PScore" / filename, pkg / filename)
+
+    root = tmp_path / "user-data"
+    target = root / "pscore"
+    source = target / "SourceCodeS2"
+    (source / "DBS").mkdir(parents=True)
+    (source / "elife_phase_separation_predictor.py").write_text("", encoding="utf-8")
+    shutil.copy2(pkg / "run", target / "run")
+    (target / "run").chmod(0o755)
+
+    env = os.environ.copy()
+    env["PHASEPRED_DATA_ROOT"] = str(root)
+    result = subprocess.run(
+        ["bash", str(pkg / "install.sh"), "--check"],
+        capture_output=True, text=True, timeout=60, env=env,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert f"PScore: ok ({target})" in result.stdout
+    assert "DBS data missing" not in result.stderr

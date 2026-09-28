@@ -18,7 +18,7 @@ from sklearn.metrics import average_precision_score, roc_auc_score
 
 from phasepred import __version__ as _phasepred_version
 from phasepred import data
-from phasepred.features import FeatureSchemaError, compute_native_features
+from phasepred.features import FeatureSchemaError, compute_fcr, compute_native_features
 from phasepred.legacy_features import (
     compute_lcr_features,
     compute_phosphosite_frequencies,
@@ -143,10 +143,23 @@ def features_from_fasta(
     idr_rows = _compute_espritz_idr_fraction(records)
     lcr_rows = _compute_lcr_fraction(records)
     for record in records:
+        try:
+            native = compute_native_features(record.sequence)
+        except FeatureSchemaError as exc:
+            native = {
+                "length": float(len(record.sequence)),
+                "Hydropathy": float("nan"),
+                "FCR": compute_fcr(record.sequence),
+            }
+            typer.echo(
+                f"WARNING: {record.accession}: Hydropathy unavailable ({exc}); "
+                "FCR was computed from the original sequence.",
+                err=True,
+            )
         row = {
             "UniprotEntry": record.accession,
             "sequence": record.sequence,
-            **compute_native_features(record.sequence),
+            **native,
         }
         row["espritz-idr-fraction"] = idr_rows.get(record.accession, float("nan"))
         row["lcr-fraction"] = lcr_rows.get(record.accession, float("nan"))
@@ -593,6 +606,24 @@ def predict(
     typer.echo(f"Computing features for {len(records)} protein(s), mode={mode}...")
     feature_df = compute_all_features(records, include_human=is_human)
 
+    columns = HUMAN_FEATURE_COLUMNS if is_human else BASE_FEATURE_COLUMNS
+    missing_by_row = feature_df[list(columns)].isna()
+    affected = missing_by_row.any(axis=1)
+    if affected.any():
+        typer.echo(
+            f"WARNING: {int(affected.sum())}/{len(feature_df)} protein(s) have missing "
+            "features; the model will impute them before scoring.",
+            err=True,
+        )
+        for index in feature_df.index[affected][:8]:
+            absent = [column for column in columns if missing_by_row.loc[index, column]]
+            typer.echo(
+                f"  {feature_df.loc[index, 'UniprotEntry']}: {', '.join(absent)}",
+                err=True,
+            )
+        if affected.sum() > 8:
+            typer.echo(f"  ... and {int(affected.sum()) - 8} more", err=True)
+
     # Load model(s)
     model_path_or_dir = chosen_models_dir / f"{mode}.joblib"
     if model_path_or_dir.exists():
@@ -632,7 +663,6 @@ def predict(
         )
 
     # Predict
-    columns = HUMAN_FEATURE_COLUMNS if is_human else BASE_FEATURE_COLUMNS
     predictions = predict_scores(models, feature_df, list(columns))
 
     # Merge features for informative output

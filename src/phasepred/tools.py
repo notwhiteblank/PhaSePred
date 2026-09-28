@@ -347,13 +347,91 @@ def _binarize_deepcoil_frame(frame: pd.DataFrame) -> float:
     return float(1.0 if frame["raw_cc"].max() >= DEEPCOIL_THRESHOLD else 0.0)
 
 
+def _deepcoil_batches(records: list[dict[str, str]]) -> list[list[dict[str, str]]]:
+    """Limit DeepCoil's in-memory SeqVec embeddings per subprocess."""
+    batches: list[list[dict[str, str]]] = []
+    batch: list[dict[str, str]] = []
+    residues = 0
+    for record in records:
+        length = len(re.sub(r"\s+", "", str(record["sequence"])))
+        if batch and (len(batch) >= 4 or residues + length > 4000):
+            batches.append(batch)
+            batch = []
+            residues = 0
+        batch.append(record)
+        residues += length
+    if batch:
+        batches.append(batch)
+    return batches
+
+
+def _deepcoil_output_files(
+    records: list[dict[str, str]], runner: Path, workdir: Path
+) -> dict[str, Path]:
+    """Run bounded batches and return the available per-protein output files."""
+    outputs: dict[str, Path] = {}
+    eligible: list[dict[str, str]] = []
+    too_short: list[str] = []
+    for record in records:
+        length = len(re.sub(r"\s+", "", str(record["sequence"])))
+        if length >= 20:
+            eligible.append(record)
+        else:
+            too_short.append(str(record["accession"]))
+    if too_short:
+        warnings.warn(
+            f"DeepCoil skipped {len(too_short)} protein(s) shorter than 20 residues: "
+            f"{', '.join(too_short[:5])}{'...' if len(too_short) > 5 else ''}.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
+    for index, batch in enumerate(_deepcoil_batches(eligible)):
+        fasta = workdir / f"input-{index}.fasta"
+        out_dir = workdir / f"out-{index}"
+        out_dir.mkdir()
+        lines: list[str] = []
+        id_map: dict[str, str] = {}
+        for record in batch:
+            accession = str(record["accession"])
+            safe = _safe_id(accession)
+            id_map[safe] = accession
+            seq = re.sub(r"\s+", "", str(record["sequence"]).upper())
+            lines.append(f">{safe}")
+            lines.extend(seq[i : i + 80] for i in range(0, len(seq), 80))
+        fasta.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        try:
+            subprocess.run(
+                [str(runner), "-i", str(fasta), "-out_path", str(out_dir), "-n_cpu", "4"],
+                check=True, capture_output=True, text=True,
+                timeout=max(300, 30 * len(batch)), env=contract_env(),
+            )
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+            reason = (
+                f"exit status {exc.returncode}"
+                if isinstance(exc, subprocess.CalledProcessError)
+                else "timeout"
+            )
+            warnings.warn(
+                f"DeepCoil failed for batch {index + 1} ({len(batch)} proteins; {reason}). "
+                "Missing values will be imputed. If the process was killed for memory, "
+                "split the input FASTA into smaller files or increase available memory.",
+                RuntimeWarning,
+                stacklevel=2,
+            )
+            continue
+        for safe, accession in id_map.items():
+            out_file = out_dir / f"{safe}.out"
+            if out_file.is_file():
+                outputs[accession] = out_file
+    return outputs
+
+
 def run_deepcoil(records: list[dict[str, str]]) -> dict[str, float]:
     """Run DeepCoil on demand for the input sequences.
 
     Aggregates the per-residue ``raw_cc`` array into the v2022 *binary*
-    coiled-coil indicator (threshold 0.82). Returns ``{}`` on any failure
-    (wrapper not installed, env broken, subprocess timeout) so the caller
-    degrades the column to NaN.
+    coiled-coil indicator (threshold 0.82). Failed batches produce no values,
+    so their rows degrade to NaN while successful batches are retained.
     """
     if not records:
         return {}
@@ -364,43 +442,7 @@ def run_deepcoil(records: list[dict[str, str]]) -> dict[str, float]:
 
     scores: dict[str, float] = {}
     with tempfile.TemporaryDirectory(prefix="deepcoil_predict_") as tmp:
-        workdir = Path(tmp)
-        fasta = workdir / "input.fasta"
-        out_dir = workdir / "out"
-        out_dir.mkdir()
-
-        lines: list[str] = []
-        id_map: dict[str, str] = {}  # safe_id → original accession
-        for r in records:
-            acc = str(r["accession"])
-            safe = _safe_id(acc)
-            id_map[safe] = acc
-            seq = re.sub(r"\s+", "", str(r["sequence"]).upper())
-            lines.append(f">{safe}")
-            lines.extend(seq[i : i + 80] for i in range(0, len(seq), 80))
-        fasta.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
-        try:
-            subprocess.run(
-                [
-                    str(runner),
-                    "-i", str(fasta),
-                    "-out_path", str(out_dir),
-                    "-n_cpu", "4",
-                ],
-                check=True,
-                capture_output=True,
-                text=True,
-                timeout=max(300, 30 * len(records)),
-                env=contract_env(),
-            )
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
-            return {}
-
-        for safe, orig in id_map.items():
-            out_file = out_dir / f"{safe}.out"
-            if not out_file.exists():
-                continue
+        for orig, out_file in _deepcoil_output_files(records, runner, Path(tmp)).items():
             try:
                 frame = pd.read_csv(out_file, sep="\t")
                 scores[orig] = _binarize_deepcoil_frame(frame)
@@ -524,33 +566,7 @@ def deepcoil_residues(records: list[dict[str, str]]) -> dict[str, dict[str, obje
         return {}
     out: dict[str, dict[str, object]] = {}
     with tempfile.TemporaryDirectory(prefix="deepcoil_res_") as tmp:
-        workdir = Path(tmp)
-        fasta = workdir / "input.fasta"
-        out_dir = workdir / "out"
-        out_dir.mkdir()
-        lines: list[str] = []
-        id_map: dict[str, str] = {}
-        for r in records:
-            acc = str(r["accession"])
-            safe = _safe_id(acc)
-            id_map[safe] = acc
-            seq = re.sub(r"\s+", "", str(r["sequence"]).upper())
-            lines.append(f">{safe}")
-            lines.extend(seq[i : i + 80] for i in range(0, len(seq), 80))
-        fasta.write_text("\n".join(lines) + "\n", encoding="utf-8")
-        try:
-            subprocess.run(
-                [str(runner), "-i", str(fasta), "-out_path", str(out_dir), "-n_cpu", "4"],
-                check=True, capture_output=True, text=True,
-                timeout=max(300, 30 * len(records)),
-                env=contract_env(),
-            )
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
-            return {}
-        for safe, orig in id_map.items():
-            fpath = out_dir / f"{safe}.out"
-            if not fpath.exists():
-                continue
+        for orig, fpath in _deepcoil_output_files(records, runner, Path(tmp)).items():
             try:
                 frame = pd.read_csv(fpath, sep="\t")
                 out[orig] = {

@@ -23,7 +23,7 @@ from typing import cast
 import pandas as pd
 
 from phasepred import tools
-from phasepred.features import CHARGED_RESIDUES, compute_native_features
+from phasepred.features import CHARGED_RESIDUES, compute_fcr, compute_native_features
 
 # Tool vocabulary (web API order).
 TOOL_NAMES = [
@@ -94,7 +94,10 @@ def compute_tool_features(
         try:
             native[r["accession"]] = compute_native_features(str(r["sequence"]).upper())
         except Exception:
-            native[r["accession"]] = {}
+            seq = str(r["sequence"]).upper()
+            native[r["accession"]] = {
+                "FCR": compute_fcr(seq) if seq else float("nan")
+            }
 
     if "hydropathy" in requested:
         for i, r in enumerate(records):

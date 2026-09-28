@@ -296,6 +296,20 @@ def test_features_from_fasta_command(tmp_path: Path) -> None:
     assert idr_ok
 
 
+def test_features_from_fasta_keeps_fcr_for_selenocysteine(tmp_path: Path) -> None:
+    fasta = tmp_path / "selenoprotein.fasta"
+    fasta.write_text(">SEL\nKUDER\n", encoding="utf-8")
+    output = tmp_path / "features.csv"
+    result = runner.invoke(
+        app, ["features-from-fasta", "--input", str(fasta), "--output", str(output)]
+    )
+    assert result.exit_code == 0, result.output
+    frame = pd.read_csv(output)
+    assert frame.loc[0, "FCR"] == 0.8
+    assert pd.isna(frame.loc[0, "Hydropathy"])
+    assert "Hydropathy unavailable" in result.output
+
+
 def test_features_from_fasta_degrades_nan_on_missing_tool(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

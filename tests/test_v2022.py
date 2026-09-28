@@ -7,6 +7,7 @@ anchored to the S1 web fixtures (Q08211 / P35637) where applicable.
 from __future__ import annotations
 
 from pathlib import Path
+import subprocess
 
 import pandas as pd
 import pytest
@@ -20,6 +21,50 @@ from phasepred.features import (
     pscore_alignment,
 )
 from phasepred.tools import _binarize_deepcoil_frame, _parse_espritz_states
+
+
+def test_deepcoil_batches_bound_memory_and_keep_successful_outputs(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from phasepred import tools
+
+    monkeypatch.setattr(tools, "find_tool_entry_or_none", lambda name: tmp_path / "run")
+    calls: list[list[str]] = []
+
+    def fake_run(argv, **kwargs):
+        fasta = Path(argv[argv.index("-i") + 1])
+        out_dir = Path(argv[argv.index("-out_path") + 1])
+        ids = [line[1:] for line in fasta.read_text().splitlines() if line.startswith(">")]
+        calls.append(ids)
+        if len(calls) == 2:
+            raise subprocess.CalledProcessError(-9, argv)
+        for accession in ids:
+            (out_dir / f"{accession}.out").write_text("raw_cc\n0.9\n")
+        return subprocess.CompletedProcess(argv, 0)
+
+    monkeypatch.setattr(tools.subprocess, "run", fake_run)
+    records = [{"accession": f"P{i}", "sequence": "A" * 100} for i in range(9)]
+    with pytest.warns(RuntimeWarning, match="memory"):
+        scores = tools.run_deepcoil(records)
+    assert list(map(len, calls)) == [4, 4, 1]
+    assert set(scores) == {"P0", "P1", "P2", "P3", "P8"}
+
+
+def test_deepcoil_batches_also_bound_total_residues() -> None:
+    from phasepred.tools import _deepcoil_batches
+
+    records = [{"accession": str(i), "sequence": "A" * 2500} for i in range(3)]
+    assert [len(batch) for batch in _deepcoil_batches(records)] == [1, 1, 1]
+
+
+def test_deepcoil_skips_short_sequences_with_specific_reason(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from phasepred import tools
+
+    monkeypatch.setattr(tools, "find_tool_entry_or_none", lambda name: tmp_path / "run")
+    with pytest.warns(RuntimeWarning, match="shorter than 20 residues: SHORT"):
+        assert tools.run_deepcoil([{"accession": "SHORT", "sequence": "ACDEFG"}]) == {}
 
 
 def _q08211_fasta() -> str:
