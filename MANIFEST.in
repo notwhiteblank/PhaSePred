@@ -20,6 +20,7 @@
 # pixi.toml/pixi.lock, and the CI workflow. pip installs the package from the
 # index; the repository remains the route for training on the paper data.
 include environment.yml
+include CHANGELOG.md
 include NOTICE
 include README-pypi.md
 recursive-include scripts *.py *.sh *.md

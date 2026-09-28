@@ -1,6 +1,6 @@
 [workspace]
 name = "phasepred"
-version = "1.0.0"
+version = "1.0.1"
 description = "Paper-faithful PhaSePred phase-separation predictor (Chen et al. 2022 PNAS)"
 channels = ["conda-forge"]
 platforms = ["linux-64"]

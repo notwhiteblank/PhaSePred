@@ -6,8 +6,8 @@ anchored to the S1 web fixtures (Q08211 / P35637) where applicable.
 
 from __future__ import annotations
 
-from pathlib import Path
 import subprocess
+from pathlib import Path
 
 import pandas as pd
 import pytest
